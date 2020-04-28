@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Global Font Sizes-->
+    <dimen name="font_size_extra_small">1sp</dimen>
+    <dimen name="font_size_small">13sp</dimen>
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_large">19sp</dimen>
+    <dimen name="font_size_extra_large">26sp</dimen>
+
+    <!--Global Letter Spacing (in em)-->
+    <fraction name="letter_spacing_normal">0</fraction>
+    <!--letter_spacing_extra_small = 0.2sp or 0.2*0.062 = 0.0124em-->
+    <fraction name="letter_spacing_extra_small">0.0124</fraction>
+    <fraction name="letter_spacing_small">0.032</fraction>
+    <fraction name="letter_spacing_medium">0.062</fraction>
+
+
+    <!--Line Spacing-->
+    <fraction name="line_spacing_medium">1.42</fraction>
+
+    <!--Line Height-->
+    <dimen name="line_height_extra_small">13sp</dimen>
+    <dimen name="line_height_small">14sp</dimen>
+    <dimen name="line_height_medium">17sp</dimen>
+    <dimen name="line_height_large">22sp</dimen>
+    <dimen name="line_height_extra_large">25sp</dimen>
+
+    <dimen name="headerTextSize">22sp</dimen>
+    <dimen name="newsMoreTextSize">12sp</dimen>
+    <dimen name="loginCardRadius">4dp</dimen>
+
+    <dimen name="select_item_border">4dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="loginViewsMargin">9dp</dimen>
+
+    <dimen name="signup_text_margin_top">10dp</dimen>
+</resources>

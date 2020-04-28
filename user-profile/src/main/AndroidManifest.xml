@@ -1,0 +1,13 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.samagra.user_profile" >
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application>
+    <activity
+        android:name=".profile.ProfileActivity"
+        android:theme="@style/BaseAppTheme" />
+    <activity
+        android:name=".passReset.OTPActivity"
+        android:theme="@style/BaseAppTheme" />
+    </application>
+</manifest>

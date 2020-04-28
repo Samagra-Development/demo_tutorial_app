@@ -11,12 +11,11 @@ import com.samagra.parent.MyApplication;
 import com.samagra.parent.R;
 import com.samagra.parent.UtilityFunctions;
 import com.samagra.parent.base.BasePresenter;
+import com.samagra.user_profile.profile.UserProfileElement;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.odk.collect.android.activities.InstanceUploaderListActivity;
-import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.contracts.DataFormDownloadResultCallback;
 import org.odk.collect.android.contracts.FormListDownloadResultCallback;
 import org.odk.collect.android.contracts.IFormManagementContract;
@@ -136,7 +135,6 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
         class RoleMapping {
             private String Designation;
             private String Role;
-
             private RoleMapping(String Designation, String Role) {
                 this.Designation = Designation;
                 this.Role = Role;
@@ -193,6 +191,41 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
             }
             formsDownloadStatus = FormDownloadStatus.SUCCESS;
         }
+    }
+
+    @Override
+    public ArrayList<UserProfileElement> getProfileConfig() {
+        String configString = MyApplication.getmFirebaseRemoteConfig().getString("profile_config");
+        ArrayList<UserProfileElement> userProfileElements = new ArrayList<>();
+        try {
+            JSONArray config = new JSONArray(configString);
+            for (int i = 0; i < config.length(); i++) {
+                JSONArray spinnerExtra = config.getJSONObject(i).optJSONArray("spinnerExtra");
+                ArrayList<String> spinnerValues = null;
+                if (spinnerExtra != null) {
+                    spinnerValues = new ArrayList<>();
+                    for (int j = 0; j < spinnerExtra.length(); j++) {
+                        spinnerValues.add(spinnerExtra.get(j).toString());
+                    }
+                }
+                userProfileElements.add(new UserProfileElement(config.getJSONObject(i).get("base64Icon").toString(),
+                        config.getJSONObject(i).get("title").toString(),
+                        config.getJSONObject(i).get("content").toString(),
+                        (Boolean) config.getJSONObject(i).get("isEditable"),
+                        (int) config.getJSONObject(i).get("section"),
+                        UserProfileElement.ProfileElementContentType.valueOf(config.getJSONObject(i).get("type").toString()),
+                        spinnerValues,
+                        getMvpInteractor().getPreferenceHelper().getValueForKey(config.getJSONObject(i).get("content").toString())
+                ));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userProfileElements;
+    }
+
+    String fetchUserID() {
+       return getMvpInteractor().getPreferenceHelper().getCurrentUserId();
     }
 
 

@@ -2,6 +2,9 @@ package com.samagra.parent.ui.HomeScreen;
 
 import com.samagra.parent.base.MvpPresenter;
 import com.samagra.parent.di.PerActivity;
+import com.samagra.user_profile.profile.UserProfileElement;
+
+import java.util.ArrayList;
 
 /**
  * The Presenter 'contract' for the HomeScreen. The {@link HomePresenter} <b>must</b> implement this interface.
@@ -31,4 +34,6 @@ public interface HomeMvpPresenter<V extends HomeMvpView, I extends HomeMvpIntera
     void applySettings();
 
     void checkForFormUpdates();
+
+    ArrayList<UserProfileElement> getProfileConfig();
 }

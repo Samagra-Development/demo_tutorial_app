@@ -28,6 +28,13 @@ import com.samagra.parent.R;
 import com.samagra.parent.UtilityFunctions;
 import com.samagra.parent.base.BaseActivity;
 import com.samagra.parent.ui.Settings.ChangeLanguageActivity;
+import com.samagra.user_profile.contracts.ComponentManager;
+import com.samagra.user_profile.contracts.IProfileContract;
+import com.samagra.user_profile.contracts.ProfileSectionInteractor;
+import com.samagra.user_profile.profile.UserProfileElement;
+
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -69,8 +76,6 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     @BindView(R.id.parentHome)
     public LinearLayout parentHome;
     private ProgressBar formProgressBar;
-
-
 
     @Inject
     HomePresenter<HomeMvpView, HomeMvpInteractor> homePresenter;
@@ -225,7 +230,18 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
                         }
                         break;
                     case R.id.profile:
-                        showOnClickMessage("You have clicked View user profile option");
+                        ComponentManager.registerProfilePackage(new ProfileSectionInteractor(), ((MainApplication) (getApplicationContext())),
+                                AppConstants.BASE_API_URL,
+                                "4b49c1c8-f90e-41e9-99ab-16d4af9eb269",
+                                "http://142.93.208.135:8080/shiksha-saathi/",
+                                "http://142.93.208.135:8080/shiksha-saathi/",
+                                getApplicationContext().getResources().getString(R.string.fusionauth_api_key), homePresenter.fetchUserID());
+                        IProfileContract initializer = ComponentManager.iProfileContract;
+                        ArrayList<UserProfileElement> profileElements = homePresenter.getProfileConfig();
+                        if (initializer != null) {
+                            initializer.launchProfileActivity(getActivityContext(), profileElements
+                                    , getActivityContext().getResources().getString(R.string.fusionauth_api_key));
+                        }
                         break;
                     case R.id.logout:
                         if (homePresenter.isNetworkConnected()) {

@@ -69,6 +69,11 @@ public class CommonsPrefsHelperImpl implements CommonsPreferenceHelper {
         editor.apply();
     }
 
+    /**
+     * token : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjVkMmJmNDIxMiJ9.eyJleHAiOjE1ODgwOTY3MzMsImlhdCI6MTU4ODA5MzEzMywiaXNzIjoiYWNtZS5jb20iLCJzdWIiOiIyZmY2YWQ1YS1lODFlLTQ0YzMtOTIzMC1kNGRmZGFmOTBkZGMiLCJhdXRoZW50aWNhdGlvblR5cGUiOiJQQVNTV09SRCIsImVtYWlsIjoidGVzdEBzYW1hZ3JhZ292ZXJuYW5jZS5pbiIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0ZXN0VXNlciJ9.S6byWXDHU59Mu4rtK_KLWW5rxftXnIbykGVvKllNMMU" user {"active":true,"data":{"phone":"7837833100"},"email":"test@samagragovernance.in","firstName":"Test","fullName":"Test User","id":"2ff6ad5a-e81e-44c3-9230-d4dfdaf90ddc","insertInstant":1587980169852,"lastLoginInstant":1588093133588,"lastName":"User","mobilePhone":"7837833100","passwordChangeRequired":false,"passwordLastUpdateInstant":1588072252435,"registrations":[{"applicationId":"4b49c1c8-f90e-41e9-99ab-16d4af9eb269","id":"0fa913aa-7d54-473a-b7ed-8a808b95b86d","insertInstant":1587980483928,"lastLoginInstant":1587980483931,"usernameStatus":"ACTIVE","verified":true}],"tenantId":"6196acf3-3353-9224-bfbc-6271dbbdb673","twoFactorDelivery":"None","twoFactorEnabled":false,"username":"testUser","usernameStatus":"ACTIVE","verified":true}
+     * @param response
+     */
+
     @Override
     public void setCurrentUserDetailsFromLogin(LoginResponse response) {
         SharedPreferences.Editor editor = defaultPreferences.edit();
@@ -109,6 +114,7 @@ public class CommonsPrefsHelperImpl implements CommonsPreferenceHelper {
             JsonArray registrations = response.user.get("registrations").getAsJsonArray();
             for (int i = 0; i < registrations.size(); i++) {
                 if (registrations.get(i).getAsJsonObject().has("applicationId")) {
+
                     String applicationId = registrations.get(i).getAsJsonObject().get("applicationId").getAsString();
                     if (applicationId.equals(AncillaryScreensDriver.APPLICATION_ID)) {
                         // This is applicationId for Shiksha Saathi

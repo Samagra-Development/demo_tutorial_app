@@ -1,0 +1,78 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">user-profile</string>
+    <string name="view_issues" translatable="false">View Dashboard</string>
+    <string name="submit_form" translatable="false">Submit Form</string>
+    <string name="inspect_school" translatable="false">Start Assessment</string>
+    <string name="on_internet_saving_complete" translatable="false">Thanks for filling the inspection report. Your report has been submitted</string>
+    <string name="no_internet_saving_complete" translatable="false">Thank you for filling the inspection report for. Since you have filled the report in offline mode, please manually submit the form when connected to the internet from the "Submit form" option</string>
+    <string name="change_app_language">Change Language</string>
+    <string name="settings">Settings</string>
+    <string name="update_details">Update details</string>
+    <string name="updating_user_profile">Updating your profile.... </string>
+    <string name="successful_update">User Details successfully updated.</string>
+    <string name="both_cannot_change_at_same_time">Both Phone number and email cannot change at the same time. Please try with one first.</string>
+    <string name="update_cancel_1">To update the language on the app, select the language and click on Update.\nPlease restart the phone to update the language.</string>
+    <string name="update">UPDATE</string>
+    <string name="enter_udise">Enter UDISE</string>
+    <string name="or">OR</string>
+    <string name="select_below">Select below</string>
+    <string name="invalid_phone_number">Invalid Phone Number</string>
+    <string name="invalid_email">Invalid Email ID</string>
+    <string name="next">NEXT</string>
+    <string name="welcome">Welcome,  </string>
+    <string name="helpline">Helpline</string>
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
+    <string name="start_bolo_app">Start Bolo App</string>
+    <string name="about_us">About Us</string>
+    <string name="tutorial">Tutorial Videos</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    <string-array name="category_of_user_shiksha_sathi">
+        <item>Not Applicable</item>
+        <item>Additional Charge</item>
+        <item>Stopgap Arrangement (BRCCs)</item>
+    </string-array>
+    <string name="snackbar_no_dashboard">This page will be linked to the Metabase dashboard to view total assessments done by the invigilator searchable by days.</string>
+    <string name="dummy_district">\u0020\u0020Select District</string>
+    <string name="dummy_block">\u0020\u0020Select Block</string>
+    <string name="dummy_school_name">\u0020\u0020Select School</string>
+    <string name="profile_contact_message" translatable="false">These following fields cannot be updated. In case there is any issue, contact admin.</string>
+    <string name="dummy_student_grade">\u0020\u0020Select Grade</string>
+    <string name="dummy_student_id">\u0020\u0020Select Student\'s ID</string>
+    <string name="dummy_student_name">\u0020\u0020Select Student\'s Name</string>
+    <string name="error_message_search">\u0020\u0020Please fill in all the relevant details of the student.</string>
+    <string name="proceed">PROCEED AHEAD</string>
+    <string name="retake_test">RETAKE TEST</string>
+    <string name="correct_words">Correct words</string>
+    <string name="time_taken_in_seconds">Time taken (in seconds)</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="not_unique_phone">Phone number is not unique </string>
+    <string name="not_unique_email">Email Address is not unique </string>
+    <string name="otp_successfully_sent">OTP successfully sent to this number</string>
+    <string name="school">SCHOOL</string>
+    <string name="udise">UDISE</string>
+    <string name="username">Username</string>
+    <string name="category">Category</string>
+    <string name="pass_did_not_match">Passwords didn\'t match.</string>
+    <string name="pass_changed_redirecting">The password has been successfully changed. Redirecting you to profile page</string>
+    <string name="pass_change_successful">The password has been successfully changed. You need to login again to continue. Redirecting you to login page</string>
+    <string name="internet_not_connected">It seems you are not connected to the internet. Please switch on your mobile data to change password.</string>
+
+    <string name="error_sending_otp">Error sending OTP. Please contact admin</string>
+    <string name="submit">SUBMIT</string>
+    <string name="seconds_remaining">Seconds Remaining: </string>
+
+    <string name="phone_number" tools:ignore="MissingTranslation">Phone Number</string>
+    <string name="less_than_8_pass" tools:ignore="MissingTranslation">Password cannot be less than 8 characters</string>
+    <string name="pass_cannot_be_empty" tools:ignore="MissingTranslation">Password cannot be empty</string>
+    <string name="base_url_assessment_module" translatable="false" tools:ignore="MissingTranslation">http://139.59.55.86/api/v1/</string>
+
+
+    <string name="resend_otp">Resend OTP</string>
+    <string name="please_enter_the_otp_sent_to_the_mobile_number_of_school_incharge">Please enter the OTP sent to the mobile number registered with this account.</string>
+    <string name="otp">OTP</string>
+    <string name="password">Password</string>
+    <string name="set_new_password">Reset Password</string>
+
+</resources>

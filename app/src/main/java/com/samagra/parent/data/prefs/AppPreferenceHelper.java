@@ -43,6 +43,16 @@ public class AppPreferenceHelper implements PreferenceHelper {
     }
 
     @Override
+    public String getValueForKey(String content) {
+        return defaultPreferences.getString(content, "");
+    }
+
+    @Override
+    public String getCurrentUserId() {
+        return defaultPreferences.getString("user.id", "");
+    }
+
+    @Override
     public String getFormVersion() {
         return sharedPreferences.getString("formVersion", "0");
     }

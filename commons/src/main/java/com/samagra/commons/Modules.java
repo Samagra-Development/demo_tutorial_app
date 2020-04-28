@@ -15,5 +15,6 @@ public enum Modules {
     COLLECT_APP,
     ANCILLARY_SCREENS,
     COMMONS,
+    PROFILE,
     PROJECT; // Encompasses all modules
 }

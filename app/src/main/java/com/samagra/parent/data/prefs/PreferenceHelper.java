@@ -18,4 +18,8 @@ public interface PreferenceHelper {
     String fetchCurrentSystemLanguage();
 
     void updateFormVersion(String version);
+
+    String getValueForKey(String content);
+
+    String getCurrentUserId();
 }

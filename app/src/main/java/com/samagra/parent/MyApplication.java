@@ -33,6 +33,8 @@ import com.samagra.parent.di.component.ApplicationComponent;
 import com.samagra.parent.di.component.DaggerApplicationComponent;
 import com.samagra.parent.di.modules.ApplicationModule;
 import com.samagra.parent.helper.OkHttpClientProvider;
+import com.samagra.user_profile.contracts.ComponentManager;
+import com.samagra.user_profile.contracts.ProfileSectionInteractor;
 
 
 import org.odk.collect.android.application.Collect;
