@@ -1,5 +1,8 @@
 package com.samagra.parent;
 
+import android.os.Environment;
+
+import java.io.File;
 import java.util.HashMap;
 
 /**
@@ -11,6 +14,10 @@ import java.util.HashMap;
 public class AppConstants {
     public static final String PREF_FILE_NAME = "SAMAGRA_PREFS";
     public static final String BASE_API_URL = "http://134.209.150.161:9011";
+    public static final String ROOT = Environment.getExternalStorageDirectory()
+            + File.separator + "odk";
+    public static final String FILE_PATH =  Environment.getExternalStorageDirectory()
+            + File.separator + "odk" + "/data2.json";
     public static String ABOUT_WEBSITE_LINK = "https://samagra-development.github.io/docs/";
     public static String ABOOUT_FORUM_LINK = "https://samagra-development.github.io/docs/";
 

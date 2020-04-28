@@ -9,13 +9,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.samagra.commons.CommonUtilities;
+import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.LocaleManager;
+import com.samagra.commons.MainApplication;
+import com.samagra.commons.Modules;
 import com.samagra.parent.MyApplication;
 import com.samagra.parent.di.component.ActivityComponent;
 import com.samagra.parent.di.component.DaggerActivityComponent;
 import com.samagra.parent.di.modules.ActivityModule;
 
 import org.odk.collect.android.activities.CollectAbstractActivity;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
 
 import static android.content.pm.PackageManager.GET_META_DATA;
 
@@ -39,6 +48,9 @@ public abstract class BaseActivity extends CollectAbstractActivity implements Mv
         super.onCreate(savedInstanceState);
         resetTitles();
     }
+
+
+
 
     public ActivityComponent getActivityComponent() {
         if (activityComponent == null) {

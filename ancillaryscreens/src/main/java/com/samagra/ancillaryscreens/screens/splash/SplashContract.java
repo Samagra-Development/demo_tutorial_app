@@ -69,6 +69,8 @@ public interface SplashContract {
          */
         void moveToNextScreen();
 
+        void startUnzipTask();
+        void downloadFirebaseRemoteStorageConfigFile();
         void init();
 
         void requestStoragePermissions();

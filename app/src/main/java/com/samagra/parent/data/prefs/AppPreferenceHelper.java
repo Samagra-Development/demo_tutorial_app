@@ -60,7 +60,7 @@ public class AppPreferenceHelper implements PreferenceHelper {
     @Override
     public String fetchCurrentSystemLanguage() {
         if(defaultPreferences.getString("currentLanguage", "").isEmpty()) {
-            defaultPreferences.edit().putString("currentLanguage", LocaleManager.HINDI).apply();
+            defaultPreferences.edit().putString("currentLanguage", LocaleManager.ENGLISH).apply();
             return LocaleManager.HINDI;
         }else{
            return defaultPreferences.getString("currentLanguage", "");

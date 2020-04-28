@@ -6,7 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.samagra.commons.MainApplication;
 import com.samagra.commons.utils.FormDownloadStatus;
+import com.samagra.parent.AppConstants;
 import com.samagra.parent.MyApplication;
 import com.samagra.parent.R;
 import com.samagra.parent.UtilityFunctions;
@@ -46,7 +48,9 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
 
     @Override
     public void onFillFormsOptionClicked() {
+//        getMvpView().launchSearchModule();
         if (getMvpView() != null) {
+
             getIFormManagementContract().launchSpecificDataForm(getMvpView().getActivityContext(), "All Widgets");
         }
     }
@@ -186,7 +190,6 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
         } else {
             if (getMvpView() != null) {
                 Timber.d("Rendering UI Visible as forms already downloaded");
-                getMvpView().showSnackbar("Forms have already been downloaded.", Snackbar.LENGTH_LONG);
                 getMvpView().renderLayoutVisible();
             }
             formsDownloadStatus = FormDownloadStatus.SUCCESS;

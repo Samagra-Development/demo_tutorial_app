@@ -54,19 +54,16 @@ public class CommonsPrefsHelperImpl implements CommonsPreferenceHelper {
 
     @Override
     public void setCurrentUserLoginFlags() {
-        SharedPreferences.Editor editor = defaultPreferences.edit();
-        editor.putBoolean("isLoggedIn", true);
-        editor.putBoolean("justLoggedIn", true);
+        defaultPreferences.edit().putBoolean("isLoggedIn", true).apply();
+        defaultPreferences.edit().putBoolean("justLoggedIn", true).apply();
 
         boolean firstLogIn = sharedPreferences.getBoolean("firstLoginIn", false);
-        if (firstLogIn) editor.putBoolean("firstLoginIn", false);
-        else editor.putBoolean("firstLoginIn", true);
+        if (firstLogIn) defaultPreferences.edit().putBoolean("firstLoginIn", false).apply();
+        else defaultPreferences.edit().putBoolean("firstLoginIn", true).apply();
 
         boolean firstLogIn2 = sharedPreferences.getBoolean("firstLoginIn2", false);
-        if (!firstLogIn2) editor.putBoolean("firstLoginIn2", true);
-        else editor.putBoolean("firstLoginIn2", false);
-
-        editor.apply();
+        if (!firstLogIn2) defaultPreferences.edit().putBoolean("firstLoginIn2", true).apply();
+        else defaultPreferences.edit().putBoolean("firstLoginIn2", false).apply();
     }
 
     /**

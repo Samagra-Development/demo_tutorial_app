@@ -3,20 +3,30 @@ package com.samagra.ancillaryscreens.screens.splash;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Environment;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.samagra.ancillaryscreens.AncillaryScreensDriver;
 import com.samagra.ancillaryscreens.BuildConfig;
+import com.samagra.ancillaryscreens.R;
 import com.samagra.ancillaryscreens.base.BasePresenter;
 import com.samagra.ancillaryscreens.data.network.BackendCallHelper;
 import com.samagra.commons.Constants;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.Modules;
+import com.samagra.commons.firebase.FirebaseUtilitiesWrapper;
+import com.samagra.commons.firebase.IFirebaseRemoteStorageFileDownloader;
 import com.samagra.commons.utils.AlertDialogUtils;
+import com.samagra.commons.utils.FileUnzipper;
+import com.samagra.commons.utils.UnzipTaskListener;
 
 
 import org.odk.collect.android.contracts.AppPermissionUserActionListener;
 import org.odk.collect.android.contracts.IFormManagementContract;
 import org.odk.collect.android.contracts.PermissionsHelper;
+import org.odk.collect.android.utilities.ApplicationConstants;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
@@ -31,6 +41,8 @@ import timber.log.Timber;
  */
 public class SplashPresenter<V extends SplashContract.View, I extends SplashContract.Interactor> extends BasePresenter<V, I> implements SplashContract.Presenter<V, I> {
 
+    private static final String ROOT = Environment.getExternalStorageDirectory()
+            + File.separator + "odk";
     private static final boolean EXIT = true;
 
     @Inject
@@ -55,6 +67,7 @@ public class SplashPresenter<V extends SplashContract.View, I extends SplashCont
             ExchangeObject.SignalExchangeObject signalExchangeObject = new ExchangeObject.SignalExchangeObject(Modules.MAIN_APP, Modules.ANCILLARY_SCREENS, intent, true);
             AncillaryScreensDriver.mainApplication.getEventBus().send(signalExchangeObject);
         } else {
+            getIFormManagementContract().resetEverythingODK();
             getIFormManagementContract().resetODKForms(getMvpView().getActivityContext());
             Timber.d("Launching Login");
             AncillaryScreensDriver.launchLoginScreen(getMvpView().getActivityContext());
@@ -67,6 +80,7 @@ public class SplashPresenter<V extends SplashContract.View, I extends SplashCont
      */
     @Override
     public void init() {
+        startUnzipTask();
         getMvpView().showActivityLayout();
         PackageInfo packageInfo = null;
         try {
@@ -88,7 +102,6 @@ public class SplashPresenter<V extends SplashContract.View, I extends SplashCont
             getMvpInteractor().updateFirstRunFlag(false);
         getMvpView().showSimpleSplash();
         updateCurrentVersion();
-        getIFormManagementContract().resetEverythingODK();
     }
 
     @Override
@@ -117,6 +130,48 @@ public class SplashPresenter<V extends SplashContract.View, I extends SplashCont
             init();
         }
     }
+
+
+    @Override
+    public void startUnzipTask() {
+        FileUnzipper fileUnzipper = new FileUnzipper(getMvpView().getActivityContext(), ROOT + "/data2.json", R.raw.data2, new UnzipTaskListener() {
+            @Override
+            public void unZipSuccess() {
+                getMvpView().showSnackbar("Remote file from Firebase has been unzipped successfully", Snackbar.LENGTH_LONG);
+            }
+
+            @Override
+            public void unZipFailure(Exception exception) {
+                getMvpView().showSnackbar("Remote file from Firebase couldn't be downloaded. Using local file only", Snackbar.LENGTH_LONG);
+            }
+        });
+        fileUnzipper.unzipFile();
+//        getMvpView().renderLayoutVisible();
+    }
+
+    @Override
+    public void downloadFirebaseRemoteStorageConfigFile() {
+        FirebaseUtilitiesWrapper.downloadFile(ROOT + "/data2.json.gzip", new IFirebaseRemoteStorageFileDownloader() {
+
+            @Override
+            public void onFirebaseRemoteStorageFileDownloadFailure(Exception exception) {
+                getMvpView().showSnackbar("Remote file from Firebase failed with error. " + exception.getMessage() + " Using local file only, ", Snackbar.LENGTH_LONG);
+                startUnzipTask();
+            }
+
+            @Override
+            public void onFirebaseRemoteStorageFileDownloadProgressState(long progressPercentage) {
+
+            }
+
+            @Override
+            public void onFirebaseRemoteStorageFileDownloadSuccess() {
+                getMvpView().showSnackbar("Remote file from Firebase has been downloaded successfully", Snackbar.LENGTH_LONG);
+                startUnzipTask();
+            }
+        });
+    }
+
 
 
     private void updateCurrentVersion(){

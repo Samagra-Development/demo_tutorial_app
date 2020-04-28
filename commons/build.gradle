@@ -92,6 +92,12 @@ dependencies {
     // Porgress snackbar
     api 'com.github.tingyik90:snackprogressbar:6.2.0'
 
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+    implementation 'com.google.firebase:firebase-database:19.1.0'
+    implementation "com.google.firebase:firebase-auth:19.1.0"
+    implementation "com.google.firebase:firebase-storage:19.1.0"
+    implementation 'com.google.firebase:firebase-config:19.0.2'
 
     androidTestImplementation 'androidx.test:core:1.2.0'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

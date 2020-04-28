@@ -16,6 +16,7 @@ import com.androidnetworking.AndroidNetworking;
 import com.google.android.material.snackbar.Snackbar;
 import com.samagra.ancillaryscreens.AncillaryScreensDriver;
 import com.samagra.ancillaryscreens.models.AboutBundle;
+import com.samagra.cascading_module.CascadingModuleDriver;
 import com.samagra.commons.Constants;
 import com.samagra.commons.CustomEvents;
 import com.samagra.commons.ExchangeObject;
@@ -42,7 +43,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
@@ -66,6 +69,8 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     public RelativeLayout parent;
 
     private Disposable logoutListener = null;
+    private static CompositeDisposable compositeDisposable = new CompositeDisposable();
+
     private PopupMenu popupMenu;
     private Snackbar progressSnackbar = null;
     private Unbinder unbinder;
@@ -93,6 +98,7 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
         formProgressBar = findViewById(R.id.form_progressBar);
         InternetMonitor.startMonitoringInternet();
         setupListeners();
+        setDisposable();
     }
 
 
@@ -140,7 +146,8 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fill_forms:
-                homePresenter.onFillFormsOptionClicked();
+                launchSearchModule();
+//                homePresenter.onFillFormsOptionClicked();
                 break;
             case R.id.view_submitted_forms:
                 homePresenter.onViewSubmittedFormsOptionsClicked();
@@ -155,12 +162,27 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     }
 
 
+    private void setDisposable() {
+        compositeDisposable.add(((MainApplication)getApplicationContext()).getEventBus()
+                .toObservable().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((Consumer) exchangeObject -> {
+                    if (exchangeObject instanceof ExchangeObject.DataExchangeObject) {
+                        homePresenter.onFillFormsOptionClicked();
+                    }
+                }, Timber::e));
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         if (logoutListener != null && !logoutListener.isDisposed()) {
             AndroidNetworking.cancel(Constants.LOGOUT_CALLS);
             logoutListener.dispose();
+        }
+        if (compositeDisposable != null && !compositeDisposable.isDisposed()) {
+            compositeDisposable.dispose();
         }
         homePresenter.onDetach();
         unbinder.unbind();
@@ -301,6 +323,14 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     public void hideLoading() {
         if (progressSnackbar != null && progressSnackbar.isShownOrQueued())
             progressSnackbar.dismiss();
+    }
+
+    @Override
+    public void launchSearchModule() {
+        CascadingModuleDriver.init( (MainApplication)getApplicationContext(), AppConstants.FILE_PATH, AppConstants.ROOT);
+        CascadingModuleDriver.launchSearchView(getActivityContext(), AppConstants.ROOT + "/data2.json", 100);
+
+
     }
 
 

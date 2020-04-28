@@ -19,4 +19,6 @@ public interface HomeMvpView extends MvpView {
 
     void renderLayoutVisible();
     void hideLoading();
+
+    void launchSearchModule();
 }

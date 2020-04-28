@@ -269,12 +269,12 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
     }
 
     public void styleLiveButton(){
-        submitButton.setBackgroundColor(getResources().getColor(R.color.button_colors));
+        submitButton.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         submitButton.setTextColor(getResources().getColor(R.color.white));
     }
 
     public void styleDisabledButton(){
-        submitButton.setBackgroundColor(getResources().getColor(R.color.disable_button_colors));
+        submitButton.setBackgroundColor(getResources().getColor(R.color.light_grey));
         submitButton.setTextColor(getResources().getColor(R.color.white));
     }
 }

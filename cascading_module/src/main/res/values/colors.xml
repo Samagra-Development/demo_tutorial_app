@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#014d3f</color>
+    <color name="colorPrimaryDark">#CC0A57</color>
+    <color name="colorAccent">#005670</color>
+    <color name="appBlue">#303765</color>
+
+    <color name="primary_light">#C5CAE9</color>
+    <color name="primary_text">#231E69</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="light_grey">#E5E5E5</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="whiteTextColor">#fff</color>
+    <color name="primaryTextColor">#231E69</color>
+    <color name="loginBkColor">#f0f0f0</color>
+
+    <color name="black">#000000</color>
+    <!--colors for card-->
+    <color name="button_colors">#8cc640</color>
+    <color name="whiteCardColor">#fff</color>
+</resources>
