@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Global Font Sizes-->
+    <dimen name="font_size_extra_small">1sp</dimen>
+    <dimen name="font_size_small">13sp</dimen>
+    <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="font_size_large">19sp</dimen>
+    <dimen name="font_size_extra_large">26sp</dimen>
+
+    <!--Global Letter Spacing (in em)-->
+    <fraction name="letter_spacing_normal">0</fraction>
+    <!--letter_spacing_extra_small = 0.2sp or 0.2*0.062 = 0.0124em-->
+    <fraction name="letter_spacing_extra_small">0.0124</fraction>
+    <fraction name="letter_spacing_small">0.032</fraction>
+    <fraction name="letter_spacing_medium">0.062</fraction>
+
+
+    <!--Line Spacing-->
+    <fraction name="line_spacing_medium">1.42</fraction>
+
+    <!--Line Height-->
+    <dimen name="line_height_extra_small">13sp</dimen>
+    <dimen name="line_height_small">14sp</dimen>
+    <dimen name="line_height_medium">17sp</dimen>
+    <dimen name="line_height_large">22sp</dimen>
+    <dimen name="line_height_extra_large">25sp</dimen>
+
+    <dimen name="headerTextSize">22sp</dimen>
+    <dimen name="newsMoreTextSize">12sp</dimen>
+    <dimen name="loginCardRadius">4dp</dimen>
+    <dimen name="loginViewsMargin">9dp</dimen>
+
+    <dimen name="signup_text_margin_top">10dp</dimen>
+    <!-- padding -->
+    <dimen name="padding_small">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">16dp</dimen>
+    <dimen name="padding_extra_large">24dp</dimen>
+
+    <!-- margin -->
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_medium">8dp</dimen>
+    <dimen name="margin_large">16dp</dimen>
+    <dimen name="margin_extra_large">24dp</dimen>
+
+    <!-- fontSize -->
+    <dimen name="text_size_extra_small">12sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_medium">20sp</dimen>
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_extra_large">28sp</dimen>
+
+    <!-- elevation -->
+    <dimen name="elevation_switch">1dp</dimen>
+    <dimen name="elevation_card_resting">2dp</dimen>
+    <dimen name="elevation_card_raised">8dp</dimen>
+    <dimen name="elevation_raised_button_resting">2dp</dimen>
+    <dimen name="elevation_raised_button">8dp</dimen>
+    <dimen name="elevation_search_bar_resting">2dp</dimen>
+    <dimen name="elevation_search_bar_scrolling">3dp</dimen>
+    <dimen name="elevation_refresh_indicator">3dp</dimen>
+    <dimen name="elevation_appbar">4dp</dimen>
+    <dimen name="elevation_snackbar">6dp</dimen>
+    <dimen name="elevation_fab_resting">6dp</dimen>
+    <dimen name="elevation_fab_clicked">12dp</dimen>
+    <dimen name="elevation_menu">8dp</dimen>
+    <dimen name="elevation_nav_drawer">16dp</dimen>
+    <dimen name="elevation_bottom_modal_sheet">16dp</dimen>
+    <dimen name="elevation_right_drawer">16dp</dimen>
+    <dimen name="elevation_dialog">24dp</dimen>
+    <dimen name="elevation_picker">24dp</dimen>
+
+    <!-- touch target -->
+    <dimen name="touch_target_size">48dp</dimen>
+    <dimen name="padding_touch_target_minimum">8dp</dimen>
+    <dimen name="divider_accidental_tap">8dp</dimen>
+
+    <!-- corner radius -->
+    <dimen name="corner_radius">2dp</dimen>
+
+    <dimen name="select_item_border">4dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+
+</resources>

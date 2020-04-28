@@ -14,4 +14,8 @@ public interface HomeMvpView extends MvpView {
     void customizeToolbar();
 
     void showOnClickMessage(String message);
+
+    void showLoading(String message);
+
+    void hideLoading();
 }

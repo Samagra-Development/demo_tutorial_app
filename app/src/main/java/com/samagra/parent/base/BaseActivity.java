@@ -4,25 +4,16 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.samagra.commons.CustomEvents;
-import com.samagra.commons.ExchangeObject;
-import com.samagra.commons.MainApplication;
-import com.samagra.commons.Modules;
-import com.samagra.parent.LocaleManager;
+import com.samagra.commons.LocaleManager;
 import com.samagra.parent.MyApplication;
 import com.samagra.parent.di.component.ActivityComponent;
 import com.samagra.parent.di.component.DaggerActivityComponent;
 import com.samagra.parent.di.modules.ActivityModule;
-
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 import static android.content.pm.PackageManager.GET_META_DATA;
 

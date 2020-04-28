@@ -23,4 +23,9 @@ public interface HomeMvpPresenter<V extends HomeMvpView, I extends HomeMvpIntera
     boolean isNetworkConnected();
 
     void onFillFormsOptionClicked();
+
+    String getYoutubeAPIKey();
+
+    String getTutorialVideoID();
+
 }

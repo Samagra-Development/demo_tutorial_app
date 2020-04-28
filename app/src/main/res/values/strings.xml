@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">Tutorial App</string>
-    <string name="view_issues" translatable="false">View Dashboard</string>
+    <string name="view_issues" translatable="false">View Forms</string>
     <string name="submit_form" translatable="false">Submit Form</string>
     <string name="inspect_school" translatable="false">Inspect School</string>
     <string name="on_internet_saving_complete" translatable="false">Data has been captured. SMS will be sent within 48 hours.</string>
@@ -47,6 +47,7 @@
     <string name="holiday_track_filter">छुट्टियां (Holiday)</string>
     <string name="smc_track_filter">मीटिंग (Meetings)</string>
     <string name="all_track_filter">All</string>
+    <string name="check_out_the_documentation_here">Check out the documentation here.</string>
     <string name="downloading">Downloading data from Server</string>
     <string name="no_internet">Failed to get data. Please check your internet connection</string>
     <string name="server_error">Failed to get data. Please check your internet connection.</string>
@@ -68,4 +69,6 @@
     <string name="download_complete">Download Complete</string>
     <string name="english">English</string>
     <string name="fill_forms">Fill Forms</string>
+    <string name="about_us_summary">This app is based on step by step tutorial  to show the user on how to create a plug and play architecture based app built on the Samagra module.</string>
+    <string name="need_help">Need Help?</string>
 </resources>

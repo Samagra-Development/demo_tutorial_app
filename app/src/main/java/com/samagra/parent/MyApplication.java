@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -19,10 +17,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.samagra.ancillaryscreens.AncillaryScreensDriver;
 import com.samagra.commons.CommonUtilities;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.InternetMonitor;
 import com.samagra.commons.InternetStatus;
+import com.samagra.commons.LocaleManager;
 import com.samagra.commons.MainApplication;
 import com.samagra.commons.Modules;
 import com.samagra.commons.NetworkConnectionInterceptor;
@@ -32,10 +32,7 @@ import com.samagra.parent.di.component.ApplicationComponent;
 import com.samagra.parent.di.component.DaggerApplicationComponent;
 import com.samagra.parent.di.modules.ApplicationModule;
 import com.samagra.parent.helper.OkHttpClientProvider;
-import com.yariksoffice.lingver.Lingver;
 
-
-import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -73,20 +70,22 @@ public class MyApplication extends Application implements MainApplication, Lifec
 //        Lingver.init(this, Locale.ENGLISH);
         String currentLanguage = getApplicationComponent().preferenceHelper().fetchCurrentSystemLanguage();
         LocaleManager.setNewLocale(this, currentLanguage);
-//        Lingver.getInstance().setLocale(this, currentLanguage);
         eventBus = new RxBus();
         setupRemoteConfig();
         setupActivityLifecycleListeners();
         InternetMonitor.init(this);
         InternetMonitor.startMonitoringInternet();
         Manager.init(this);
+        AncillaryScreensDriver.init(this, AppConstants.BASE_API_URL,
+                "http://142.93.208.135:8080/shiksha-saathi/",
+                "http://142.93.208.135:8080/shiksha-saathi/",
+                getApplicationId());
         initBus();
-        // AndroidNetworking.initialize(this, this.provideOkHttpClient());
     }
 
 
     public static String getApplicationId() {
-        return "f0ddb3f6-091b-45e4-8c0f-889f89d4f5da";
+        return "4b49c1c8-f90e-41e9-99ab-16d4af9eb269";
     }
 
     private void initBus() {

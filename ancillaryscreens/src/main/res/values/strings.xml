@@ -1,0 +1,53 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">AncillaryScreens</string>
+    <string name="fusionauth_api_key" translatable="false">c0VY85LRCYnsk64xrjdXNVFFJ3ziTJ91r08Cm0Pcjbc</string>
+    <string name="profile_contact_message" translatable="false">These following fields cannot be updated. In case there is any issue, contact admin.</string>
+    <string-array name="category_of_user_shiksha_sathi">
+        <item>Not Applicable</item>
+        <item>Additional Charge</item>
+        <item>Stopgap Arrangement (BRCCs)</item>
+    </string-array>
+    <string name="oh_no" tools:ignore="MissingTranslation">Oh no!</string>
+    <string name="unexpected_error_occured" tools:ignore="MissingTranslation">Something unexpected has occurred.</string>
+    <string name="send_otp"> Send OTP </string>
+    <string name="let_s_start_again" tools:ignore="MissingTranslation">Let\'s Start Again</string>
+
+    <string name="otp_successfully_sent">OTP successfully sent to this number</string>
+    <string name="enter_the_registered_mobile_number_associated_with_your_account">Enter the registered Mobile number associated with your account.</string>
+    <string name="invalid_email" tools:ignore="MissingTranslation">Invalid Email</string>
+    <string name="enrollment" tools:ignore="MissingTranslation">Enrolment as per UDISE</string>
+    <string name="seconds_remaining" tools:ignore="MissingTranslation">Seconds Remaining:&#032;&#032;</string>
+    <string name="mulitple_users_same_phone_found" tools:ignore="MissingTranslation">Multiple users with the same phone number found. Please ensure that your contact number is not used by any other account or Contact Admin.</string>
+    <string name="mulitple_users_same_email_found" tools:ignore="MissingTranslation">Multiple users with the same email found. Please ensure that your email is not used by any other account or Contact Admin.</string>
+    <string name="update_failed_due_to_internet" tools:ignore="MissingTranslation">User details failed to update. Please check your internet!</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="less_than_8_pass" tools:ignore="MissingTranslation">Password cannot be less than 8 characters</string>
+    <string name="pass_cannot_be_empty" tools:ignore="MissingTranslation">Password cannot be empty</string>
+    <string name="invalid_phone_number" tools:ignore="MissingTranslation">Please check the entered mobile number.</string>
+    <string name="please_enter_the_otp_sent_to_the_mobile_number_of_school_incharge" tools:ignore="MissingTranslation">Please enter the OTP sent to the associated mobile number.</string>
+    <string name="otp"> OTP </string>
+    <string name="internet_not_connected">It seems you are not connected to the internet. Please switch on your mobile data to change password.</string>
+
+    <string name="pass_changed_redirecting">The password has been successfully changed. Redirecting you to profile page</string>
+    <string name="pass_change_successful">The password has been successfully changed. You need to login again to continue. Redirecting you to login page</string>
+    <string name="error_in_change_pass">The server responded with an error. Please retry again</string>
+    <string name="error_sending_otp">Error sending OTP. Please contact admin</string>
+    <string name="pass_did_not_match">Passwords didn\'t match.</string>
+
+
+    <!--Login Page-->
+    <string name="helpline">HELPLINE</string>
+
+    <string name="reset_password">Reset Password</string>
+    <string name="about_preferences">About Us</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="submit">SUBMIT</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_pass">Reset App Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="resend_otp">Resend OTP</string>
+
+</resources>

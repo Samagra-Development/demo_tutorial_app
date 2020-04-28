@@ -26,11 +26,14 @@
         <activity
             android:name="com.samagra.parent.ui.HomeScreen.HomeActivity"
             android:theme="@style/BaseAppTheme">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                    <category android:name="android.intent.category.LAUNCHER" />
+            <intent-filter>
+                <action android:name="com.psx.odk.LAUNCH_HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.HomeScreen.ComingSoon"
+            android:theme="@style/BaseAppTheme" />
+        <activity android:name=".ui.HomeScreen.WebViewActivity" />
     </application>
-
 </manifest>

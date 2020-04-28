@@ -1,6 +1,7 @@
 package com.samagra.parent.ui.HomeScreen;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -48,7 +49,8 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
     @Override
     public void onViewHelplineClicked() {
         if (getMvpView() != null) {
-            getMvpView().showOnClickMessage("You have clicked to view Contact Helpline option.");
+            Intent i = new Intent(getMvpView().getActivityContext(), ComingSoon.class);
+            getMvpView().getActivityContext().startActivity(i);
         }
     }
 
@@ -64,6 +66,24 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
         } else {
             return MyApplication.isOnline;
         }
+    }
+
+    @Override
+    public String getYoutubeAPIKey() {
+        String youtubeAPIKey = "";
+        if(MyApplication.getmFirebaseRemoteConfig() != null) {
+            youtubeAPIKey = MyApplication.getmFirebaseRemoteConfig().getString("youtube_api_key");
+        }
+        return youtubeAPIKey;
+    }
+
+    @Override
+    public String getTutorialVideoID() {
+        String youtubeTutorialVideoID = "";
+        if(MyApplication.getmFirebaseRemoteConfig() != null) {
+            youtubeTutorialVideoID = MyApplication.getmFirebaseRemoteConfig().getString("youtube_tutorial_video_id");
+        }
+        return youtubeTutorialVideoID;
     }
 
 

@@ -55,5 +55,6 @@
     <color name="mapPointCircle">#ffff0000</color>
     <color name="mapPointFill">#ffffffff</color>
     <color name="mapLine">#ffff0000</color>
+    <color name="golden">#fbe582</color>
 
 </resources>

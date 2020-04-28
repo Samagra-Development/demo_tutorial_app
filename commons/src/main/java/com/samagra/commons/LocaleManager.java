@@ -1,4 +1,4 @@
-package com.samagra.parent;
+package com.samagra.commons;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">ट्यूटोरियल ऐप</string>
-    <string name="view_issues">View Dashboard</string>
-    <string name="submit_form">Submit Form</string>
+    <string name="view_issues">फार्म देखें</string>
+    <string name="submit_form">फार्म जमा करें</string>
     <string name="inspect_school">Inspect School</string>
     <string name="on_internet_saving_complete"> डेटा सुरक्षित हो चुका है। 48 घंटों में एसएमएस चला जाएगा। </string>
     <string name="no_internet_saving_complete"> डेटा सुरक्षित हो चुका है। डाटा ऑन करने के बाद एसएमएस चला जाएगा। </string>
@@ -66,4 +66,8 @@
     <string name="download_complete">डाउनलोड हुआ</string>
     <string name="english">अंग्रेज़ी</string>
     <string name="fill_forms">फॉर्म भरें</string>
+    <string name="about_us_summary">यह ऐप उपयोगकर्ता को समाग्रा मॉड्यूल पर निर्मित प्लग एंड प्ले आर्किटेक्चर आधारित ऐप बनाने का तरीका दिखाने के लिए स्टेप बाय स्टेप ट्यूटोरियल पर आधारित है।</string>
+    <string name="need_help">सहायता चाहिए?</string>
+    <string name="about_preferences">हमारे बारें में</string>
+
 </resources>

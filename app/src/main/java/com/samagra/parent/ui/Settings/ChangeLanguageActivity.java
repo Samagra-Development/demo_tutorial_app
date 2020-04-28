@@ -2,16 +2,14 @@ package com.samagra.parent.ui.Settings;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
-import android.view.View;
+
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,10 +20,9 @@ import com.samagra.commons.CustomEvents;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.MainApplication;
 import com.samagra.commons.Modules;
-import com.samagra.parent.LocaleManager;
+import com.samagra.commons.LocaleManager;
 import com.samagra.parent.R;
 import com.samagra.parent.base.BaseActivity;
-import com.samagra.parent.base.NonMvpBaseActivity;
 import com.samagra.parent.base.ODKTestActivity;
 import com.samagra.parent.ui.HomeScreen.HomeActivity;
 

@@ -87,6 +87,7 @@ dependencies {
     api "androidx.lifecycle:lifecycle-extensions:2.0.0"
 
     api 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'androidx.browser:browser:1.0.0'
 
     // Porgress snackbar
     api 'com.github.tingyik90:snackprogressbar:6.2.0'

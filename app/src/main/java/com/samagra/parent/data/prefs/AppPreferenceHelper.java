@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
-import com.samagra.parent.LocaleManager;
+import com.samagra.commons.LocaleManager;
 import com.samagra.parent.di.ApplicationContext;
 import com.samagra.parent.di.PreferenceInfo;
 

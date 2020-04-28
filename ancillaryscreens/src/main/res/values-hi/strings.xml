@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login">लॉग इन करें</string>
+    <string name="username">यूज़र नेम</string>
+    <string name="password">पासवर्ड</string>
+    <string name="submit">जमा करें</string>
+    <string name="forgot_password">पासवर्ड भूल गए?</string>
+    <string name="forgot_pass">ऐप पासवर्ड रीसेट</string>
+    <string name="phone_number">फ़ोन नंबर</string>
+    <string name="send_otp">अपने मोबाइल पर ओटीपी भेजें</string>
+    <string name="invalid_phone_number">कृपया अपने द्वारा भरे गए मोबाइल नंबर की जांच करें</string>
+    <string name="enter_the_registered_mobile_number_associated_with_your_account">अपने खाते से संबद्ध पंजीकृत मोबाइल नंबर दर्ज करें।</string>
+    <string name="seconds_remaining">Seconds Remaining:</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="resend_otp">Resend OTP</string>
+</resources>
