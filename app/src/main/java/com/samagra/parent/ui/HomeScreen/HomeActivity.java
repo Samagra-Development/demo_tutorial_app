@@ -24,6 +24,7 @@ import com.samagra.commons.InternetMonitor;
 import com.samagra.commons.LocaleManager;
 import com.samagra.commons.MainApplication;
 import com.samagra.commons.Modules;
+import com.samagra.notification_module.AppNotificationUtils;
 import com.samagra.parent.AppConstants;
 import com.samagra.parent.R;
 import com.samagra.parent.UtilityFunctions;
@@ -99,6 +100,7 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
         InternetMonitor.startMonitoringInternet();
         setupListeners();
         setDisposable();
+        AppNotificationUtils.updateFirebaseToken(getActivityContext(), AppConstants.BASE_API_URL, getActivityContext().getResources().getString(R.string.fusionauth_api_key));
     }
 
 
@@ -269,7 +271,7 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
                         if (homePresenter.isNetworkConnected()) {
                             if (logoutListener == null)
                                 initializeLogoutListener();
-                            AncillaryScreensDriver.performLogout(this);
+                            AncillaryScreensDriver.performLogout(this, getActivityContext().getResources().getString(R.string.fusionauth_api_key));
                         } else {
                             showSnackbar("It seems you are offline. Logout cannot happen in offline conditions.", 3000);
                         }

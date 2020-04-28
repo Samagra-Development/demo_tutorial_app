@@ -1,1 +1,1 @@
-include ':app', ':commons', ':customworkmanager', ':ancillaryscreens', ':collect_app', ':user-profile', ':cascading_module'
+include ':app', ':commons', ':customworkmanager', ':ancillaryscreens', ':collect_app', ':user-profile', ':cascading_module', ':notification_module'

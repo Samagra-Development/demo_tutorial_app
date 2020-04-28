@@ -29,6 +29,7 @@ import com.samagra.commons.Modules;
 import com.samagra.commons.NetworkConnectionInterceptor;
 import com.samagra.commons.RxBus;
 import com.samagra.commons.TaskScheduler.Manager;
+import com.samagra.notification_module.AppNotificationUtils;
 import com.samagra.parent.di.component.ApplicationComponent;
 import com.samagra.parent.di.component.DaggerApplicationComponent;
 import com.samagra.parent.di.modules.ApplicationModule;
@@ -83,6 +84,7 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
         InternetMonitor.startMonitoringInternet();
         Manager.init(this);
         initializeFormManagementPackage();
+        AppNotificationUtils.createNotificationChannel(this);
         AncillaryScreensDriver.init(this, AppConstants.BASE_API_URL,
                 "http://142.93.208.135:8080/shiksha-saathi/",
                 "http://142.93.208.135:8080/shiksha-saathi/",
@@ -127,6 +129,7 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
                             int notificationID = ((ExchangeObject.NotificationExchangeObject) exchangeObject).data.getNotificationID();
                             int title = ((ExchangeObject.NotificationExchangeObject) exchangeObject).data.getTitle();
                             String body = ((ExchangeObject.NotificationExchangeObject) exchangeObject).data.getBody();
+                            AppNotificationUtils.showNotification(getApplicationContext(), pendingIntent, notificationID, title, body);
                             Timber.d("Event Received for Push Notification %s ", title);
                         } else if(!((((ExchangeObject) exchangeObject).type != ExchangeObject.ExchangeObjectTypes.SIGNAL) && ((InternetStatus) ((ExchangeObject.DataExchangeObject) exchangeObject).data).isCurrentStatus())){
                             try{

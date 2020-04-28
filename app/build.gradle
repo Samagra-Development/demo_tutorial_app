@@ -97,6 +97,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     compile project(path: ':user-profile')
     compile project(path: ':cascading_module')
+    compile project(path: ':notification_module')
 
 }
 repositories {

@@ -49,5 +49,6 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="resend_otp">Resend OTP</string>
+    <string name="unable_to_log_out">Unable to log out.</string>
 
 </resources>
