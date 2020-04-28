@@ -15,6 +15,8 @@ import com.samagra.parent.di.component.ActivityComponent;
 import com.samagra.parent.di.component.DaggerActivityComponent;
 import com.samagra.parent.di.modules.ActivityModule;
 
+import org.odk.collect.android.activities.CollectAbstractActivity;
+
 import static android.content.pm.PackageManager.GET_META_DATA;
 
 
@@ -28,7 +30,7 @@ import static android.content.pm.PackageManager.GET_META_DATA;
  *
  * @author Pranav Sharma
  */
-public abstract class BaseActivity extends AppCompatActivity implements MvpView {
+public abstract class BaseActivity extends CollectAbstractActivity implements MvpView {
 
     private ActivityComponent activityComponent;
 

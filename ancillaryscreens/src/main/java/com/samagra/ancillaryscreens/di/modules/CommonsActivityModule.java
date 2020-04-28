@@ -5,12 +5,15 @@ import android.content.Context;
 
 import com.samagra.ancillaryscreens.di.ActivityContext;
 import com.samagra.ancillaryscreens.di.ApplicationContext;
+import com.samagra.ancillaryscreens.di.FormManagementCommunicator;
 import com.samagra.ancillaryscreens.di.PreferenceInfo;
 import com.samagra.commons.Constants;
 import com.samagra.ancillaryscreens.data.network.BackendCallHelper;
 import com.samagra.ancillaryscreens.data.network.BackendCallHelperImpl;
 import com.samagra.ancillaryscreens.data.prefs.CommonsPreferenceHelper;
 import com.samagra.ancillaryscreens.data.prefs.CommonsPrefsHelperImpl;
+
+import org.odk.collect.android.contracts.IFormManagementContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -53,6 +56,13 @@ public class CommonsActivityModule {
     CommonsPreferenceHelper provideCommonsPreferenceHelper(CommonsPrefsHelperImpl commonsPrefsHelper) {
         return commonsPrefsHelper;
     }
+
+
+    @Provides
+    IFormManagementContract provideIFormManagementContract() {
+        return FormManagementCommunicator.getContract();
+    }
+
 
     @Provides
     @PreferenceInfo

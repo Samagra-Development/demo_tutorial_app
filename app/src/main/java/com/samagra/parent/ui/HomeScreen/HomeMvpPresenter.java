@@ -28,4 +28,7 @@ public interface HomeMvpPresenter<V extends HomeMvpView, I extends HomeMvpIntera
 
     String getTutorialVideoID();
 
+    void applySettings();
+
+    void checkForFormUpdates();
 }

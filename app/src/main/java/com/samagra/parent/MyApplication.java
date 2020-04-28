@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.samagra.ancillaryscreens.AncillaryScreensDriver;
+import com.samagra.ancillaryscreens.di.FormManagementCommunicator;
 import com.samagra.commons.CommonUtilities;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.InternetMonitor;
@@ -34,6 +35,9 @@ import com.samagra.parent.di.modules.ApplicationModule;
 import com.samagra.parent.helper.OkHttpClientProvider;
 
 
+import org.odk.collect.android.application.Collect;
+import org.odk.collect.android.contracts.FormManagementSectionInteractor;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
@@ -48,7 +52,7 @@ import timber.log.Timber;
  * @author Pranav Sharma
  * @see MainApplication
  */
-public class MyApplication extends Application implements MainApplication, LifecycleObserver {
+public class MyApplication extends Collect implements MainApplication, LifecycleObserver {
 
     protected ApplicationComponent applicationComponent;
 
@@ -76,6 +80,7 @@ public class MyApplication extends Application implements MainApplication, Lifec
         InternetMonitor.init(this);
         InternetMonitor.startMonitoringInternet();
         Manager.init(this);
+        initializeFormManagementPackage();
         AncillaryScreensDriver.init(this, AppConstants.BASE_API_URL,
                 "http://142.93.208.135:8080/shiksha-saathi/",
                 "http://142.93.208.135:8080/shiksha-saathi/",
@@ -84,6 +89,12 @@ public class MyApplication extends Application implements MainApplication, Lifec
     }
 
 
+    private void initializeFormManagementPackage() {
+        org.odk.collect.android.contracts.ComponentManager.registerFormManagementPackage(new FormManagementSectionInteractor());
+        FormManagementCommunicator.setContract(org.odk.collect.android.contracts.ComponentManager.iFormManagementContract);
+        org.odk.collect.android.contracts.ComponentManager.iFormManagementContract.setODKModuleStyle(this, R.drawable.saksham_bg, R.style.BaseAppTheme,
+                R.style.FormEntryActivityTheme, R.style.BaseAppTheme_SettingsTheme_Dark, Long.MAX_VALUE);
+    }
     public static String getApplicationId() {
         return "4b49c1c8-f90e-41e9-99ab-16d4af9eb269";
     }

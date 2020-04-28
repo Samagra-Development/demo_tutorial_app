@@ -14,5 +14,8 @@ import javax.inject.Singleton;
 public interface PreferenceHelper {
     String getCurrentUserName();
 
+    String getFormVersion();
     String fetchCurrentSystemLanguage();
+
+    void updateFormVersion(String version);
 }

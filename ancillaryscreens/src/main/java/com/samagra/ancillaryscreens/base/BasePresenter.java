@@ -2,6 +2,8 @@ package com.samagra.ancillaryscreens.base;
 
 import com.samagra.ancillaryscreens.data.network.BackendCallHelper;
 
+import org.odk.collect.android.contracts.IFormManagementContract;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,6 +21,7 @@ public class BasePresenter<V extends MvpView, I extends MvpInteractor> implement
     private I mvpInteractor;
     private BackendCallHelper apiHelper;
     private CompositeDisposable compositeDisposable;
+    private IFormManagementContract iFormManagementContract;
 
     /**
      * These dependencies are provided by the {@link com.samagra.ancillaryscreens.di.modules.CommonsActivityModule} and
@@ -33,10 +36,11 @@ public class BasePresenter<V extends MvpView, I extends MvpInteractor> implement
      *                            at the same time if need be (like in the event of back press during an API call)
      */
     @Inject
-    public BasePresenter(I mvpInteractor, BackendCallHelper apiHelper, CompositeDisposable compositeDisposable) {
+    public BasePresenter(I mvpInteractor, BackendCallHelper apiHelper, CompositeDisposable compositeDisposable, IFormManagementContract iFormManagementContract) {
         this.mvpInteractor = mvpInteractor;
         this.apiHelper = apiHelper;
         this.compositeDisposable = compositeDisposable;
+        this.iFormManagementContract = iFormManagementContract;
     }
 
     @Override
@@ -75,4 +79,10 @@ public class BasePresenter<V extends MvpView, I extends MvpInteractor> implement
     public boolean isViewAttached() {
         return this.mvpView != null;
     }
+
+    @Override
+    public IFormManagementContract getIFormManagementContract() {
+        return iFormManagementContract;
+    }
 }
+

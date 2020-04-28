@@ -3,7 +3,10 @@ package com.samagra.parent.di.modules;
 import android.app.Activity;
 import android.content.Context;
 
+import com.samagra.ancillaryscreens.di.FormManagementCommunicator;
 import com.samagra.parent.di.ActivityContext;
+
+import org.odk.collect.android.contracts.IFormManagementContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -31,5 +34,10 @@ public class ActivityModule {
     @Provides
     Activity provideActivity() {
         return activity;
+    }
+
+    @Provides
+    IFormManagementContract provideIFormManagementContract() {
+        return FormManagementCommunicator.getContract();
     }
 }

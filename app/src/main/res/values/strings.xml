@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">Tutorial App</string>
     <string name="view_issues" translatable="false">View Forms</string>
-    <string name="submit_form" translatable="false">Submit Form</string>
+    <string name="submit_form" translatable="false">Submit Forms</string>
     <string name="inspect_school" translatable="false">Inspect School</string>
     <string name="on_internet_saving_complete" translatable="false">Data has been captured. SMS will be sent within 48 hours.</string>
     <string name="no_internet_saving_complete" translatable="false">Data has been captured. SMS will be sent after syncing with the internet. </string>

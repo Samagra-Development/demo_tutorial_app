@@ -6,6 +6,8 @@ import com.samagra.ancillaryscreens.base.BasePresenter;
 import com.samagra.ancillaryscreens.data.network.BackendCallHelper;
 import com.samagra.commons.TaskScheduler.ScheduledOneTimeWork;
 
+import org.odk.collect.android.contracts.IFormManagementContract;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
@@ -19,10 +21,9 @@ import io.reactivex.disposables.CompositeDisposable;
 public class AboutPresenter<V extends AboutContract.View, I extends AboutContract.Interactor> extends BasePresenter<V, I> implements AboutContract.Presenter<V, I> {
 
     @Inject
-    public AboutPresenter(I mvpInteractor, BackendCallHelper apiHelper, CompositeDisposable compositeDisposable) {
-        super(mvpInteractor, apiHelper, compositeDisposable);
+    public AboutPresenter(I mvpInteractor, BackendCallHelper apiHelper, CompositeDisposable compositeDisposable, IFormManagementContract iFormManagementContract) {
+        super(mvpInteractor, apiHelper, compositeDisposable, iFormManagementContract);
     }
-
 
     @Override
     public void test(int x, int y, float z) {

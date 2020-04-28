@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
@@ -61,6 +63,14 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     private Snackbar progressSnackbar = null;
     private Unbinder unbinder;
 
+    @BindView(R.id.circularProgressBar)
+    public ProgressBar circularProgressBar;
+
+    @BindView(R.id.parentHome)
+    public LinearLayout parentHome;
+    private ProgressBar formProgressBar;
+
+
 
     @Inject
     HomePresenter<HomeMvpView, HomeMvpInteractor> homePresenter;
@@ -74,6 +84,9 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
         unbinder = ButterKnife.bind(this);
         homePresenter.onAttach(this);
         setupToolbar();
+        homePresenter.applySettings();
+        formProgressBar = findViewById(R.id.form_progressBar);
+        InternetMonitor.startMonitoringInternet();
         setupListeners();
     }
 
@@ -89,9 +102,25 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
             PreferenceManager.getDefaultSharedPreferences(getActivityContext()).edit().putBoolean("isLanguageChanged", false).apply();
             startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         }
-        ;
+        renderLayoutInvisible();
+        homePresenter.checkForFormUpdates();
         customizeToolbar();
 
+    }
+
+    @Override
+    public void renderLayoutVisible() {
+        formProgressBar.setVisibility(View.GONE);
+        parentHome.setVisibility(View.VISIBLE);
+        circularProgressBar.setVisibility(View.GONE);
+    }
+
+
+    private  void renderLayoutInvisible() {
+        formProgressBar.setVisibility(View.VISIBLE);
+        formProgressBar.setProgress(0);
+        parentHome.setVisibility(View.GONE);
+        circularProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void setupListeners() {

@@ -70,5 +70,7 @@ public interface SplashContract {
         void moveToNextScreen();
 
         void init();
+
+        void requestStoragePermissions();
     }
 }

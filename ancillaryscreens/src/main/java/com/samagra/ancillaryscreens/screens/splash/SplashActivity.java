@@ -42,7 +42,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
         splashPresenter.onAttach(this);
-        splashPresenter.init();
+        splashPresenter.requestStoragePermissions();
     }
 
 

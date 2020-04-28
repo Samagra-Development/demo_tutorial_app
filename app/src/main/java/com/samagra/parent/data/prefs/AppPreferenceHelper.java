@@ -36,6 +36,18 @@ public class AppPreferenceHelper implements PreferenceHelper {
     }
 
     @Override
+    public void updateFormVersion(String version) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("formVersion", version);
+        editor.apply();
+    }
+
+    @Override
+    public String getFormVersion() {
+        return sharedPreferences.getString("formVersion", "0");
+    }
+
+    @Override
     public String fetchCurrentSystemLanguage() {
         if(defaultPreferences.getString("currentLanguage", "").isEmpty()) {
             defaultPreferences.edit().putString("currentLanguage", LocaleManager.HINDI).apply();

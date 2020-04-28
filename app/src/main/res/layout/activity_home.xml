@@ -176,7 +176,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1.5"
                         android:gravity="center"
-                        android:text="Sync Forms"
+                        android:text="@string/submit_form"
                         android:layout_marginBottom="3dp"
                         android:textColor="@color/colorPrimary"
                         android:textSize="13sp" />
@@ -235,5 +235,6 @@
 
 
     </LinearLayout>
+    <include layout="@layout/progress_bar_layout"/>
 
 </RelativeLayout>

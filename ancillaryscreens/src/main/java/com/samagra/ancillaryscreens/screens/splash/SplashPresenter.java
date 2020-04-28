@@ -11,7 +11,12 @@ import com.samagra.ancillaryscreens.data.network.BackendCallHelper;
 import com.samagra.commons.Constants;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.Modules;
+import com.samagra.commons.utils.AlertDialogUtils;
 
+
+import org.odk.collect.android.contracts.AppPermissionUserActionListener;
+import org.odk.collect.android.contracts.IFormManagementContract;
+import org.odk.collect.android.contracts.PermissionsHelper;
 
 import javax.inject.Inject;
 
@@ -29,9 +34,10 @@ public class SplashPresenter<V extends SplashContract.View, I extends SplashCont
     private static final boolean EXIT = true;
 
     @Inject
-    public SplashPresenter(I mvpInteractor, BackendCallHelper apiHelper, CompositeDisposable compositeDisposable) {
-        super(mvpInteractor, apiHelper, compositeDisposable);
+    public SplashPresenter(I mvpInteractor, BackendCallHelper apiHelper, CompositeDisposable compositeDisposable, IFormManagementContract iFormManagementContract) {
+        super(mvpInteractor, apiHelper, compositeDisposable, iFormManagementContract);
     }
+
 
     /**
      * Decides the next screen and moves to the decided screen.
@@ -49,6 +55,7 @@ public class SplashPresenter<V extends SplashContract.View, I extends SplashCont
             ExchangeObject.SignalExchangeObject signalExchangeObject = new ExchangeObject.SignalExchangeObject(Modules.MAIN_APP, Modules.ANCILLARY_SCREENS, intent, true);
             AncillaryScreensDriver.mainApplication.getEventBus().send(signalExchangeObject);
         } else {
+            getIFormManagementContract().resetODKForms(getMvpView().getActivityContext());
             Timber.d("Launching Login");
             AncillaryScreensDriver.launchLoginScreen(getMvpView().getActivityContext());
         }
@@ -81,6 +88,34 @@ public class SplashPresenter<V extends SplashContract.View, I extends SplashCont
             getMvpInteractor().updateFirstRunFlag(false);
         getMvpView().showSimpleSplash();
         updateCurrentVersion();
+        getIFormManagementContract().resetEverythingODK();
+    }
+
+    @Override
+    public void requestStoragePermissions() {
+        PermissionsHelper permissionUtils = new PermissionsHelper();
+        if (!PermissionsHelper.areStoragePermissionsGranted(getMvpView().getActivityContext())) {
+            permissionUtils.requestStoragePermissions((SplashActivity) getMvpView().getActivityContext(), new AppPermissionUserActionListener() {
+                @Override
+                public void granted() {
+                    try {
+                        getIFormManagementContract().createODKDirectories();
+                    } catch (RuntimeException e) {
+                        AlertDialogUtils.showDialog(AlertDialogUtils.createErrorDialog((SplashActivity) getMvpView().getActivityContext(),
+                                e.getMessage(), EXIT), (SplashActivity) getMvpView().getActivityContext());
+                        return;
+                    }
+                    init();
+                }
+
+                @Override
+                public void denied() {
+                    getMvpView().finishActivity();
+                }
+            });
+        } else {
+            init();
+        }
     }
 
 

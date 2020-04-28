@@ -12,6 +12,8 @@ import com.samagra.commons.Constants;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.Modules;
 
+import org.odk.collect.android.contracts.IFormManagementContract;
+
 import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -28,8 +30,8 @@ import timber.log.Timber;
 public class LoginPresenter<V extends LoginContract.View, I extends LoginContract.Interactor> extends BasePresenter<V, I> implements LoginContract.Presenter<V, I> {
 
     @Inject
-    public LoginPresenter(I mvpInteractor, BackendCallHelper apiHelper, CompositeDisposable compositeDisposable) {
-        super(mvpInteractor, apiHelper, compositeDisposable);
+    public LoginPresenter(I mvpInteractor, BackendCallHelper apiHelper, CompositeDisposable compositeDisposable, IFormManagementContract iFormManagementContract) {
+        super(mvpInteractor, apiHelper, compositeDisposable, iFormManagementContract);
     }
 
     /**

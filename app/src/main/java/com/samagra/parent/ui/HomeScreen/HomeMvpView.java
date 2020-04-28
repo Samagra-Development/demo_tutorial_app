@@ -17,5 +17,6 @@ public interface HomeMvpView extends MvpView {
 
     void showLoading(String message);
 
+    void renderLayoutVisible();
     void hideLoading();
 }
