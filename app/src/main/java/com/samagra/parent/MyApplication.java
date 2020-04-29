@@ -86,8 +86,8 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
         initializeFormManagementPackage();
         AppNotificationUtils.createNotificationChannel(this);
         AncillaryScreensDriver.init(this, AppConstants.BASE_API_URL,
-                "http://142.93.208.135:8080/shiksha-saathi/",
-                "http://142.93.208.135:8080/shiksha-saathi/",
+                AppConstants.SEND_OTP_URL,
+                AppConstants.UPDATE_PASSWORD_URL,
                 getApplicationId());
         initBus();
     }
