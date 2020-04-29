@@ -254,7 +254,18 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
                         }
                         break;
                     case R.id.profile:
-                      git a
+                        ComponentManager.registerProfilePackage(new ProfileSectionInteractor(), ((MainApplication) (getApplicationContext())),
+                                AppConstants.BASE_API_URL,
+                                "4b49c1c8-f90e-41e9-99ab-16d4af9eb269",
+                                AppConstants.SEND_OTP_URL,
+                                AppConstants.UPDATE_PASSWORD_URL,
+                                getApplicationContext().getResources().getString(R.string.fusionauth_api_key), homePresenter.fetchUserID());
+                        IProfileContract initializer = ComponentManager.iProfileContract;
+                        ArrayList<UserProfileElement> profileElements = homePresenter.getProfileConfig();
+                        if (initializer != null) {
+                            initializer.launchProfileActivity(getActivityContext(), profileElements
+                                    , getActivityContext().getResources().getString(R.string.fusionauth_api_key));
+                        }
                         break;
                     case R.id.logout:
                         if (homePresenter.isNetworkConnected()) {
