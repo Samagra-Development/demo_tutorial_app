@@ -5,11 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-
+import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,9 +19,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.internal.LinkedTreeMap;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.Date;
-
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -59,13 +58,13 @@ public class PushMessagingService extends FirebaseMessagingService {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            Timber.tag(TAG).w(task.getException(), "getInstanceId failed");
                             return;
                         }
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
                         persistToken(token);
-                        Log.d(TAG, "Current Token: " + token);
+                        Timber.d("Current Token: %s", token);
                     }
                 });
     }
@@ -140,9 +139,8 @@ public class PushMessagingService extends FirebaseMessagingService {
                                 }else{
                                     //Grove.e(TAG, "Token addition failed");
                                 }
-                            }else{
-                               // Grove.e(TAG, "Token addition failed");
-                            }
+                            }// Grove.e(TAG, "Token addition failed");
+
                         } catch (IOException e) {
                            // Grove.e(e);
                            // Grove.e(TAG, "Token addition failed");
@@ -232,13 +230,13 @@ public class PushMessagingService extends FirebaseMessagingService {
      * is initially generated so this is where you would retrieve the token.
      */
     @Override
-    public void onNewToken(String token) {
-        Timber.d("Refreshed token: " + token);
+    public void onNewToken(@NotNull String token) {
+        Timber.d("Refreshed token: %s", token);
         persistToken(token);
     }
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(@NotNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
         Intent notifyIntent = new Intent(externalContext, NotificationRenderingActivity.class);
@@ -254,24 +252,24 @@ public class PushMessagingService extends FirebaseMessagingService {
                 remoteMessage.getNotification().getTitle(),
                 remoteMessage.getNotification().getBody());
 
-        Log.d(TAG, "From: " + remoteMessage.getFrom());
+        Timber.d("From: %s", remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
+            Timber.d("Message data payload: %s", remoteMessage.getData());
 
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
                 scheduleJob();
             } else {
                 // Handle message within 10 seconds
-                Log.d(TAG, "Message Handled");
+                Timber.d("Message Handled");
             }
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            Timber.d("Message Notification Body: %s", remoteMessage.getNotification().getBody());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
