@@ -56,7 +56,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleManager.setLocale(base));
+        super.attachBaseContext(base);
     }
 
     protected void resetTitles() {

@@ -39,7 +39,6 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.security.ProviderInstaller;
 import com.google.firebase.analytics.FirebaseAnalytics;
-import com.samagra.commons.LocaleManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -251,8 +250,8 @@ public class Collect extends Application {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         JodaTimeAndroid.init(this);
 
-//        defaultSysLanguage = Locale.getDefault().getLanguage();
-//        new LocaleHelper().updateLocale(this);
+        defaultSysLanguage = Locale.getDefault().getLanguage();
+        new LocaleHelper().updateLocale(this);
 
         FormMetadataMigrator.migrate(PreferenceManager.getDefaultSharedPreferences(this));
         AutoSendPreferenceMigrator.migrate();
@@ -299,7 +298,13 @@ public class Collect extends Application {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        LocaleManager.setLocale(this);
+
+        //noinspection deprecation
+        defaultSysLanguage = newConfig.locale.getLanguage();
+        boolean isUsingSysLanguage = GeneralSharedPreferences.getInstance().get(KEY_APP_LANGUAGE).equals("");
+        if (!isUsingSysLanguage) {
+            new LocaleHelper().updateLocale(this);
+        }
     }
 
     /**

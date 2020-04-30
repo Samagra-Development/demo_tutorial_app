@@ -21,7 +21,6 @@ import com.samagra.commons.Constants;
 import com.samagra.commons.CustomEvents;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.InternetMonitor;
-import com.samagra.commons.LocaleManager;
 import com.samagra.commons.MainApplication;
 import com.samagra.commons.Modules;
 import com.samagra.notification_module.AppNotificationUtils;
@@ -29,7 +28,6 @@ import com.samagra.parent.AppConstants;
 import com.samagra.parent.R;
 import com.samagra.parent.UtilityFunctions;
 import com.samagra.parent.base.BaseActivity;
-import com.samagra.parent.ui.Settings.ChangeLanguageActivity;
 import com.samagra.user_profile.contracts.ComponentManager;
 import com.samagra.user_profile.contracts.IProfileContract;
 import com.samagra.user_profile.contracts.ProfileSectionInteractor;
@@ -107,14 +105,6 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
-        boolean isLanguageChanged = PreferenceManager.getDefaultSharedPreferences(getActivityContext()).getBoolean("isLanguageChanged", false);
-        if (isLanguageChanged) {
-            LocaleManager.setNewLocale(this,
-                    PreferenceManager.getDefaultSharedPreferences(getActivityContext()).getString("currentLanguage", LocaleManager.HINDI));
-            Intent intent = this.getIntent();
-            PreferenceManager.getDefaultSharedPreferences(getActivityContext()).edit().putBoolean("isLanguageChanged", false).apply();
-            startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
-        }
         renderLayoutInvisible();
         homePresenter.checkForFormUpdates();
         customizeToolbar();
@@ -275,11 +265,6 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
                         } else {
                             showSnackbar("It seems you are offline. Logout cannot happen in offline conditions.", 3000);
                         }
-                        break;
-                    case R.id.change_lang:
-                        Intent intent = new Intent(getActivityContext(), ChangeLanguageActivity.class);
-                        intent.putExtra("title", getResources().getString(R.string.change_language));
-                        getActivityContext().startActivity(intent);
                         break;
                 }
                 return true;

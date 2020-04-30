@@ -55,7 +55,7 @@
     <string name="please_update_the_password_and_details_of_the_school_in_charge">Please update the password and details of the school in-charge.</string>
     <string name="update_details">Update details</string>
     <string name="update_cancel_1">To update the language on the app, select the language and click on Update. Please restart the phone to update the language.</string>
-    <string name="update">Update</string>
+    <string name="update">UPDATE</string>
     <string name="cancel">Cancel</string>
     <string name="select_form">Select form</string>
     <string name="no_internet_retry">Please connect to internet and retry</string>
@@ -71,4 +71,5 @@
     <string name="fill_forms">Fill Forms</string>
     <string name="about_us_summary">This app is based on step by step tutorial  to show the user on how to create a plug and play architecture based app built on the Samagra module.</string>
     <string name="need_help">Need Help?</string>
+    <string name="select_language">Select language</string>
 </resources>

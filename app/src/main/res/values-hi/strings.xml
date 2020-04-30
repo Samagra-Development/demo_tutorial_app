@@ -69,5 +69,6 @@
     <string name="about_us_summary">यह ऐप उपयोगकर्ता को समाग्रा मॉड्यूल पर निर्मित प्लग एंड प्ले आर्किटेक्चर आधारित ऐप बनाने का तरीका दिखाने के लिए स्टेप बाय स्टेप ट्यूटोरियल पर आधारित है।</string>
     <string name="need_help">सहायता चाहिए?</string>
     <string name="about_preferences">हमारे बारें में</string>
+    <string name="select_language">भाषा चुनें</string>
 
 </resources>

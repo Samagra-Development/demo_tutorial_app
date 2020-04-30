@@ -23,7 +23,6 @@ import com.samagra.commons.CommonUtilities;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.InternetMonitor;
 import com.samagra.commons.InternetStatus;
-import com.samagra.commons.LocaleManager;
 import com.samagra.commons.MainApplication;
 import com.samagra.commons.Modules;
 import com.samagra.commons.NetworkConnectionInterceptor;
@@ -34,9 +33,6 @@ import com.samagra.parent.di.component.ApplicationComponent;
 import com.samagra.parent.di.component.DaggerApplicationComponent;
 import com.samagra.parent.di.modules.ApplicationModule;
 import com.samagra.parent.helper.OkHttpClientProvider;
-import com.samagra.user_profile.contracts.ComponentManager;
-import com.samagra.user_profile.contracts.ProfileSectionInteractor;
-
 
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.contracts.FormManagementSectionInteractor;
@@ -74,9 +70,6 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
     @Override
     public void onCreate() {
         super.onCreate();
-//        Lingver.init(this, Locale.ENGLISH);
-        String currentLanguage = getApplicationComponent().preferenceHelper().fetchCurrentSystemLanguage();
-        LocaleManager.setNewLocale(this, currentLanguage);
         eventBus = new RxBus();
         setupRemoteConfig();
         setupActivityLifecycleListeners();
@@ -167,7 +160,7 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleManager.setLocale(base));
+        super.attachBaseContext(base);
         applicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
@@ -307,7 +300,6 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        LocaleManager.setLocale(this);
     }
 
     /**

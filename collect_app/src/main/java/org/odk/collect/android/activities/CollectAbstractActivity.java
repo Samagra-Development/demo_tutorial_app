@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.samagra.commons.Constants;
-import com.samagra.commons.LocaleManager;
 
 import org.odk.collect.android.ODKDriver;
 import org.odk.collect.android.R;
@@ -41,9 +40,9 @@ import java.util.HashMap;
 
 import timber.log.Timber;
 
+import static org.odk.collect.android.utilities.PermissionUtils.areStoragePermissionsGranted;
 import static org.odk.collect.android.utilities.PermissionUtils.finishAllActivities;
 import static org.odk.collect.android.utilities.PermissionUtils.isEntryPointActivity;
-import static org.odk.collect.android.utilities.PermissionUtils.areStoragePermissionsGranted;
 
 public abstract class CollectAbstractActivity extends AppCompatActivity {
 
@@ -126,8 +125,9 @@ public abstract class CollectAbstractActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleManager.setLocale(base));
+        super.attachBaseContext(new LocaleHelper().updateLocale(base));
     }
+
 
     /**
      * This function modifies the current Activity {@link Toolbar} with the parameters provided in the
