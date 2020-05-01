@@ -18,8 +18,8 @@ public class AppConstants {
             + File.separator + "odk";
     public static final String FILE_PATH =  Environment.getExternalStorageDirectory()
             + File.separator + "odk" + "/data2.json";
-    public static final String SEND_OTP_URL = "http://142.93.208.135:8080/shiksha-saathi/";
-    public static final String UPDATE_PASSWORD_URL = "http://142.93.208.135:8080/shiksha-saathi/";
+    public static final String SEND_OTP_URL = "http://localhost:8080/shiksha-saathi/";
+    public static final String UPDATE_PASSWORD_URL = "http://localhost:8080/shiksha-saathi/";
     public static String ABOUT_WEBSITE_LINK = "https://samagra-development.github.io/docs/";
     public static String ABOOUT_FORUM_LINK = "https://samagra-development.github.io/docs/";
 
