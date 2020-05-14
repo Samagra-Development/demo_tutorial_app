@@ -2,14 +2,18 @@ package com.samagra.user_profile.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.samagra.commons.Constants;
 import com.samagra.user_profile.di.component.ActivityComponent;
 import com.samagra.user_profile.di.component.DaggerActivityComponent;
 import com.samagra.user_profile.di.modules.CommonsActivityModule;
+
+import org.odk.collect.android.utilities.LocaleHelper;
 
 /**
  * This abstract class serves as the Base for all other activities used in this module. The class is
@@ -40,6 +44,11 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
     @Override
     public Context getActivityContext() {
         return this;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(new LocaleHelper().updateLocale(base, PreferenceManager.getDefaultSharedPreferences(base).getString(Constants.APP_LANGUAGE_KEY, "en")));
     }
 
     @Override

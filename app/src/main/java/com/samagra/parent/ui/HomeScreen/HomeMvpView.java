@@ -21,4 +21,6 @@ public interface HomeMvpView extends MvpView {
     void hideLoading();
 
     void launchSearchModule();
+
+    void updateLocale(String language);
 }

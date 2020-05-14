@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.samagra.commons.MainApplication;
@@ -22,6 +23,7 @@ import org.odk.collect.android.contracts.DataFormDownloadResultCallback;
 import org.odk.collect.android.contracts.FormListDownloadResultCallback;
 import org.odk.collect.android.contracts.IFormManagementContract;
 import org.odk.collect.android.logic.FormDetails;
+import org.odk.collect.android.utilities.LocaleHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,7 +53,7 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
 //        getMvpView().launchSearchModule();
         if (getMvpView() != null) {
 
-            getIFormManagementContract().launchSpecificDataForm(getMvpView().getActivityContext(), "All Widgets");
+            getIFormManagementContract().launchSpecificDataForm(getMvpView().getActivityContext(), "Test Homework");
         }
     }
 
@@ -129,7 +131,7 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
 
 
     private String getUserRoleFromPref() {
-        return "Test";
+        return "Sample";
 //        return getMvpInteractor().getPreferenceHelper().getUserRoleFromPref(); //Viewing and download of forms is based on User's role, you can configure it via Preferences when logging in as per User's Login response
     }
 
@@ -232,6 +234,17 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
     }
 
 
+    @Override
+    public void updateLanguageSettings() {
+        String language = getMvpInteractor().getPreferenceHelper().updateAppLanguage();
+        getMvpView().updateLocale(language);
+    }
+
+    @Override
+    public void resetODKData() {
+        getIFormManagementContract().resetEverythingODK();
+    }
+
     class FormListDownloadListener implements FormListDownloadResultCallback {
         @Override
         public void onSuccessfulFormListDownload(HashMap<String, FormDetails> latestFormListFromServer) {
@@ -239,7 +252,7 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
             String formsString = MyApplication.getmFirebaseRemoteConfig().getString(getRoleFromRoleMappingFirebase(getUserRoleFromPref()));
             HashMap<String, String> userRoleBasedForms = getIFormManagementContract().downloadFormList(formsString);
             // Download Forms if updates available or if forms not downloaded. Delete forms if not applied for the role.
-            HashMap<String, String> formsToBeDownloaded = getIFormManagementContract().downloadNewFormsBasedOnDownloadedFormList(userRoleBasedForms, latestFormListFromServer);
+            HashMap<String, FormDetails> formsToBeDownloaded = getIFormManagementContract().downloadNewFormsBasedOnDownloadedFormList(userRoleBasedForms, latestFormListFromServer);
             if (formsToBeDownloaded.size() > 0)
                 formsDownloadStatus = FormDownloadStatus.DOWNLOADING;
             else {
@@ -253,7 +266,7 @@ public class HomePresenter<V extends HomeMvpView, I extends HomeMvpInteractor> e
         public void onFailureFormListDownload(boolean isAPIFailure) {
             if (isAPIFailure) {
                 Timber.e("There has been an error in downlaoding the forms from Aggregagte");
-                getMvpView().showSnackbar("There has been an error in downlaoding the forms from Aggregagte. \n" +
+                getMvpView().showSnackbar("There has been an error in downloading the forms from Aggregagte. \n" +
                         "Please check if URL is valid or not and ODK configs are alright.", Snackbar.LENGTH_LONG);
                 getMvpView().renderLayoutVisible();
                 formsDownloadStatus = FormDownloadStatus.FAILURE;

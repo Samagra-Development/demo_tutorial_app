@@ -36,4 +36,8 @@ public interface HomeMvpPresenter<V extends HomeMvpView, I extends HomeMvpIntera
     void checkForFormUpdates();
 
     ArrayList<UserProfileElement> getProfileConfig();
+
+    void updateLanguageSettings();
+
+    void resetODKData();
 }

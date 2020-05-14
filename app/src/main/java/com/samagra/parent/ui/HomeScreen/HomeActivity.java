@@ -1,22 +1,30 @@
 package com.samagra.parent.ui.HomeScreen;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.androidnetworking.AndroidNetworking;
 import com.google.android.material.snackbar.Snackbar;
 import com.samagra.ancillaryscreens.AncillaryScreensDriver;
 import com.samagra.ancillaryscreens.models.AboutBundle;
 import com.samagra.cascading_module.CascadingModuleDriver;
+import com.samagra.cascading_module.models.InstitutionInfo;
 import com.samagra.commons.Constants;
 import com.samagra.commons.CustomEvents;
 import com.samagra.commons.ExchangeObject;
@@ -28,11 +36,14 @@ import com.samagra.parent.AppConstants;
 import com.samagra.parent.R;
 import com.samagra.parent.UtilityFunctions;
 import com.samagra.parent.base.BaseActivity;
+import com.samagra.parent.ui.Settings.ILanguageChangedListener;
+import com.samagra.parent.ui.Settings.UpdateAppLanguageFragment;
 import com.samagra.user_profile.contracts.ComponentManager;
 import com.samagra.user_profile.contracts.IProfileContract;
 import com.samagra.user_profile.contracts.ProfileSectionInteractor;
 import com.samagra.user_profile.profile.UserProfileElement;
 
+import org.odk.collect.android.utilities.LocaleHelper;
 
 import java.util.ArrayList;
 
@@ -47,6 +58,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
+
+import static org.odk.collect.android.preferences.GeneralKeys.KEY_APP_LANGUAGE;
 
 /**
  * View part of the Home Screen. This class only handles the UI operations, all the business logic is simply
@@ -86,7 +99,6 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        InternetMonitor.startMonitoringInternet();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         getActivityComponent().inject(this);
@@ -95,10 +107,19 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
         setupToolbar();
         homePresenter.applySettings();
         formProgressBar = findViewById(R.id.form_progressBar);
-        InternetMonitor.startMonitoringInternet();
+        InternetMonitor.startMonitoringInternet(((MainApplication) getApplicationContext()));
         setupListeners();
         setDisposable();
+        homePresenter.updateLanguageSettings();
         AppNotificationUtils.updateFirebaseToken(getActivityContext(), AppConstants.BASE_API_URL, getActivityContext().getResources().getString(R.string.fusionauth_api_key));
+    }
+
+
+    private void tartActivityAndCloseAllOthers(Activity activityContext) {
+        new LocaleHelper().updateLocale(getActivityContext());
+        startActivity(new Intent(this, HomeActivity.class));
+        overridePendingTransition(0, 0);
+        finishAffinity();
     }
 
 
@@ -112,6 +133,18 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     }
 
     @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if(fm.getBackStackEntryCount()>0) {
+            if(fm.getBackStackEntryAt(0).getName().equals("ChangeLanguageActivity")){
+                fm.popBackStackImmediate();
+                parentHome.setVisibility(View.VISIBLE);
+            }
+
+        }
+    }
+
+    @Override
     public void renderLayoutVisible() {
         formProgressBar.setVisibility(View.GONE);
         parentHome.setVisibility(View.VISIBLE);
@@ -119,7 +152,7 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     }
 
 
-    private  void renderLayoutInvisible() {
+    private void renderLayoutInvisible() {
         formProgressBar.setVisibility(View.VISIBLE);
         formProgressBar.setProgress(0);
         parentHome.setVisibility(View.GONE);
@@ -138,7 +171,8 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.fill_forms:
-                launchSearchModule();
+                homePresenter.onFillFormsOptionClicked();
+//                launchSearchModule();
 //                homePresenter.onFillFormsOptionClicked();
                 break;
             case R.id.view_submitted_forms:
@@ -153,14 +187,44 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
+    private void addFragment(int containerViewId, FragmentManager manager, Fragment fragment, String fragmentTag) {
+        try {
+            final String fragmentname = fragment.getClass().getName();
+            Timber.d("addFragment() :: Adding new fragment %s", fragmentname);
+            // Create new fragment and transaction
+            final FragmentTransaction transaction = manager.beginTransaction();
 
+            transaction.add(containerViewId, fragment, fragmentTag);
+            transaction.addToBackStack(fragmentTag);
+            new Handler().post(() -> {
+                try {
+                    transaction.commit();
+                } catch (IllegalStateException ex) {
+                    Timber.e("Failed to commit Fragment Transaction with exception %s", ex.getMessage());
+                }
+            });
+        } catch (IllegalStateException ex) {
+            Timber.e("Failed to add Fragment with exception %s", ex.getMessage());
+
+        }
+
+    }
+
+    @SuppressWarnings("unchecked")
     private void setDisposable() {
         compositeDisposable.add(((MainApplication)getApplicationContext()).getEventBus()
                 .toObservable().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe((Consumer) exchangeObject -> {
                     if (exchangeObject instanceof ExchangeObject.DataExchangeObject) {
-                        homePresenter.onFillFormsOptionClicked();
+                        if(((ExchangeObject.DataExchangeObject) exchangeObject).to == Modules.MAIN_APP &&
+                                ((ExchangeObject.DataExchangeObject) exchangeObject).from == Modules.CASCADING_SEARCH &&
+                                ((ExchangeObject.DataExchangeObject) exchangeObject).data instanceof InstitutionInfo) {
+                            homePresenter.onFillFormsOptionClicked();
+                            if (!compositeDisposable.isDisposed())
+                                compositeDisposable.dispose();
+                        }
                     }
                 }, Timber::e));
     }
@@ -228,46 +292,64 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
         if (popupMenu == null) {
             popupMenu = new PopupMenu(HomeActivity.this, v);
             popupMenu.getMenuInflater().inflate(R.menu.home_screen_menu, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(item -> {
-                switch (item.getItemId()) {
-                    case R.id.about_us:
-                        AncillaryScreensDriver.launchAboutActivity(this, provideAboutBundle());
-                        break;
-                    case R.id.tutorial_video:
-                        if (homePresenter.getTutorialVideoID().isEmpty() || homePresenter.getYoutubeAPIKey().isEmpty()) {
-                            showOnClickMessage("Please configure Video ID and API Key to see Youtube Videos.");
-                        } else {
-                            Bundle bundle = new Bundle();
-                            bundle.putString("youtube_api_key", homePresenter.getYoutubeAPIKey());
-                            bundle.putString("youtube_tutorial_video_id", homePresenter.getTutorialVideoID());
-                            AncillaryScreensDriver.launchTutorialActivity(this, bundle);
-                        }
-                        break;
-                    case R.id.profile:
-                        ComponentManager.registerProfilePackage(new ProfileSectionInteractor(), ((MainApplication) (getApplicationContext())),
-                                AppConstants.BASE_API_URL,
-                                "4b49c1c8-f90e-41e9-99ab-16d4af9eb269",
-                                AppConstants.SEND_OTP_URL,
-                                AppConstants.UPDATE_PASSWORD_URL,
-                                getApplicationContext().getResources().getString(R.string.fusionauth_api_key), homePresenter.fetchUserID());
-                        IProfileContract initializer = ComponentManager.iProfileContract;
-                        ArrayList<UserProfileElement> profileElements = homePresenter.getProfileConfig();
-                        if (initializer != null) {
-                            initializer.launchProfileActivity(getActivityContext(), profileElements
-                                    , getActivityContext().getResources().getString(R.string.fusionauth_api_key));
-                        }
-                        break;
-                    case R.id.logout:
-                        if (homePresenter.isNetworkConnected()) {
-                            if (logoutListener == null)
-                                initializeLogoutListener();
-                            AncillaryScreensDriver.performLogout(this, getActivityContext().getResources().getString(R.string.fusionauth_api_key));
-                        } else {
-                            showSnackbar("It seems you are offline. Logout cannot happen in offline conditions.", 3000);
-                        }
-                        break;
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.change_lang:
+                            if (HomeActivity.this.findViewById(R.id.fragment_container) != null) {
+                                UpdateAppLanguageFragment firstFragment = UpdateAppLanguageFragment.newInstance(PreferenceManager.getDefaultSharedPreferences(HomeActivity.this.getActivityContext())
+                                        .getString(Constants.APP_LANGUAGE_KEY, "en"), language -> {
+                                            SharedPreferences.Editor edit = PreferenceManager
+                                                    .getDefaultSharedPreferences(getActivityContext()).edit();
+                                            edit.putString(KEY_APP_LANGUAGE, language);
+                                            edit.putString(Constants.APP_LANGUAGE_KEY, language);
+                                            edit.apply();
+                                            tartActivityAndCloseAllOthers((Activity) getActivityContext());
+                                        });
+                                HomeActivity.this.addFragment(R.id.fragment_container, HomeActivity.this.getSupportFragmentManager(), firstFragment, "ChangeLanguageActivity");
+                                parentHome.setVisibility(View.GONE);
+                            }
+                            break;
+                        case R.id.about_us:
+                            AncillaryScreensDriver.launchAboutActivity(HomeActivity.this, HomeActivity.this.provideAboutBundle());
+                            break;
+                        case R.id.tutorial_video:
+                            if (homePresenter.getTutorialVideoID().isEmpty() || homePresenter.getYoutubeAPIKey().isEmpty()) {
+                                HomeActivity.this.showOnClickMessage("Please configure Video ID and API Key to see Youtube Videos.");
+                            } else {
+                                Bundle bundle = new Bundle();
+                                bundle.putString("youtube_api_key", homePresenter.getYoutubeAPIKey());
+                                bundle.putString("youtube_tutorial_video_id", homePresenter.getTutorialVideoID());
+                                AncillaryScreensDriver.launchTutorialActivity(HomeActivity.this, bundle);
+                            }
+                            break;
+                        case R.id.profile:
+                            ComponentManager.registerProfilePackage(new ProfileSectionInteractor(), ((MainApplication) (HomeActivity.this.getApplicationContext())),
+                                    AppConstants.BASE_API_URL,
+                                    "4b49c1c8-f90e-41e9-99ab-16d4af9eb269",
+                                    AppConstants.SEND_OTP_URL,
+                                    AppConstants.UPDATE_PASSWORD_URL,
+                                    HomeActivity.this.getApplicationContext().getResources().getString(R.string.fusionauth_api_key), homePresenter.fetchUserID());
+                            IProfileContract initializer = ComponentManager.iProfileContract;
+                            ArrayList<UserProfileElement> profileElements = homePresenter.getProfileConfig();
+                            if (initializer != null) {
+                                initializer.launchProfileActivity(HomeActivity.this.getActivityContext(), profileElements
+                                        , HomeActivity.this.getActivityContext().getResources().getString(R.string.fusionauth_api_key));
+                            }
+                            break;
+                        case R.id.logout:
+                            if (homePresenter.isNetworkConnected()) {
+                                if (logoutListener == null)
+                                    HomeActivity.this.initializeLogoutListener();
+                                AncillaryScreensDriver.performLogout(HomeActivity.this, HomeActivity.this.getActivityContext().getResources().getString(R.string.fusionauth_api_key));
+                            } else {
+                                HomeActivity.this.showSnackbar("It seems you are offline. Logout cannot happen in offline conditions.", 3000);
+                            }
+                            break;
+                    }
+                    return true;
                 }
-                return true;
             });
         }
         popupMenu.show();
@@ -287,6 +369,7 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
                         if (eventExchangeObject.to == Modules.MAIN_APP && eventExchangeObject.from == Modules.ANCILLARY_SCREENS) {
                             if (eventExchangeObject.customEvents == CustomEvents.LOGOUT_COMPLETED) {
                                 hideLoading();
+                                homePresenter.resetODKData();
                                 logoutListener.dispose();
                             } else if (eventExchangeObject.customEvents == CustomEvents.LOGOUT_INITIATED) {
                                 showLoading("Logging you out...Please wait.");
@@ -318,6 +401,11 @@ public class HomeActivity extends BaseActivity implements HomeMvpView, View.OnCl
         CascadingModuleDriver.launchSearchView(getActivityContext(), AppConstants.ROOT + "/data2.json", 100);
 
 
+    }
+
+    @Override
+    public void updateLocale(String language) {
+        new LocaleHelper().updateLocale(getActivityContext(), language);
     }
 
 

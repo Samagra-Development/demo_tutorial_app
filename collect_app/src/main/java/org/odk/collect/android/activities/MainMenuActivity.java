@@ -57,6 +57,7 @@ import org.odk.collect.android.preferences.PreferencesActivity;
 import org.odk.collect.android.preferences.Transport;
 import org.odk.collect.android.provider.InstanceProviderAPI.InstanceColumns;
 import org.odk.collect.android.utilities.ApplicationConstants;
+import org.odk.collect.android.utilities.LocaleHelper;
 import org.odk.collect.android.utilities.PlayServicesUtil;
 import org.odk.collect.android.utilities.SharedPreferencesUtils;
 import org.odk.collect.android.utilities.ToastUtils;
@@ -385,7 +386,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
             }
         }
 
-        ((Collect) getApplication())
+        Collect.getInstance()
                 .getDefaultTracker()
                 .enableAutoActivityTracking(true);
     }
@@ -510,7 +511,7 @@ public class MainMenuActivity extends CollectAbstractActivity {
     // This flag must be set each time the app starts up
     private void setupGoogleAnalytics() {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(Collect
-                .getInstance());
+                .getInstance().getAppContext());
         boolean isAnalyticsEnabled = settings.getBoolean(GeneralKeys.KEY_ANALYTICS, true);
         GoogleAnalytics googleAnalytics = GoogleAnalytics.getInstance(getApplicationContext());
         googleAnalytics.setAppOptOut(!isAnalyticsEnabled);

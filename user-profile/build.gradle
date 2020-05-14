@@ -65,5 +65,7 @@ dependencies {
     api "com.jakewharton:butterknife:10.1.0"
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+    implementation project(path: ':collect_app')
+    implementation project(path: ':collect_app')
 
 }

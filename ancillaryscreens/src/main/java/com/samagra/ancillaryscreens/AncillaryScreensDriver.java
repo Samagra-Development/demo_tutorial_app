@@ -15,11 +15,11 @@ import com.samagra.ancillaryscreens.screens.about.AboutActivity;
 import com.samagra.ancillaryscreens.screens.login.LoginActivity;
 import com.samagra.ancillaryscreens.screens.tutorials.TutorialActivity;
 import com.samagra.commons.CommonUtilities;
+import com.samagra.commons.Constants;
 import com.samagra.commons.CustomEvents;
 import com.samagra.commons.ExchangeObject;
 import com.samagra.commons.MainApplication;
 import com.samagra.commons.Modules;
-import com.samagra.notification_module.PushMessagingService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -133,7 +133,7 @@ public class AncillaryScreensDriver {
      * @param token   - The API token for the fusionAuth API.
      * @param context - The current Activity Context.
      * @see AncillaryScreensDriver#removeFCMTokenFromObject(JSONObject) - This edits the JSONObject retrieved by removing the FCM token.
-     * @see AncillaryScreensDriver#putUpdatedUserDetailsObject(JSONObject, Context, String, String)  - This uploads the new JSON Object as User data Object (with no FCM Token).
+     * @see AncillaryScreensDriver#putUpdatedUserDetailsObject(JSONObject, Context, String, String, String)  - This uploads the new JSON Object as User data Object (with no FCM Token).
      */
     private static void makeRemoveTokenApiCall(@NonNull String token, @NonNull Context context, @NonNull String apiKey) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -150,11 +150,12 @@ public class AncillaryScreensDriver {
 
                     @Override
                     public void onSuccess(JSONObject jsonObject) {
+                        String appLanguage = PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.APP_LANGUAGE_KEY, "en");
                         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply();
                         Timber.d("OnSuccess make Remove token api call %s", jsonObject);
                         JSONObject removedFCMTokenObject = removeFCMTokenFromObject(jsonObject);
                         Timber.d("Removed FCM Token, new Object is %s", removedFCMTokenObject);
-                        putUpdatedUserDetailsObject(removedFCMTokenObject, context, userId, apiKey);
+                        putUpdatedUserDetailsObject(removedFCMTokenObject, context, userId, apiKey, appLanguage);
                     }
 
                     @Override
@@ -169,13 +170,13 @@ public class AncillaryScreensDriver {
 
     /**
      * This function makes an API call to post the updated User data as {@link JSONObject} returned by {@link AncillaryScreensDriver#removeFCMTokenFromObject(JSONObject)}.
-     *
-     * @param jsonObjectToPut - The user {@link JSONObject} without FCM Token.
+     *  @param jsonObjectToPut - The user {@link JSONObject} without FCM Token.
      * @param context         - The current Activity Context.
      * @param userId          - String userId for the current User.
      * @param apiKey          - The FusionAuth ApiKey.
+     * @param appLanguage App Language
      */
-    private static void putUpdatedUserDetailsObject(JSONObject jsonObjectToPut, Context context, String userId, String apiKey) {
+    private static void putUpdatedUserDetailsObject(JSONObject jsonObjectToPut, Context context, String userId, String apiKey, String appLanguage) {
         BackendCallHelperImpl.getInstance()
                 .performPutUserDetailsApiCall(userId, apiKey, jsonObjectToPut)
                 .subscribeOn(Schedulers.io())
@@ -189,8 +190,8 @@ public class AncillaryScreensDriver {
                     @Override
                     public void onSuccess(JSONObject jsonObject) {
                         Timber.d("Successfully removed FCM TOKEN, %s", jsonObject);
+                        logoutUserLocally(context, appLanguage);
                         notifyLogoutCompleted();
-                        logoutUserLocally(context);
                         Intent intent = new Intent(context, LoginActivity.class);
                         CommonUtilities.startActivityAsNewTask(intent, context);
                     }
@@ -230,11 +231,13 @@ public class AncillaryScreensDriver {
      * logged out.
      *
      * @param context - The current Activity/Application context.
+     * @param appLanguage - App Language Locale
      */
-    private static void logoutUserLocally(@NonNull Context context) {
+    private static void logoutUserLocally(@NonNull Context context, String appLanguage) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("isLoggedIn", false);
+        editor.putString(Constants.APP_LANGUAGE_KEY, appLanguage);
         editor.remove("updatedMappingThroughFirebase2");
         editor.remove("formVersion");
         editor.apply();

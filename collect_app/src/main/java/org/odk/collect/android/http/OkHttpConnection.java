@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -112,7 +113,7 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
         if (statusCode != HttpURLConnection.HTTP_OK) {
             discardEntityBytes(response);
             String errMsg = Collect
-                    .getInstance()
+                    .getInstance().getAppContext().getResources()
                     .getString(R.string.file_fetch_failed, uri.toString(), response.message(), String.valueOf(statusCode));
 
             Timber.e(errMsg);
@@ -339,9 +340,10 @@ public class OkHttpConnection implements OpenRosaHttpInterface {
     }
 
     private String getHeaderDate() {
-        GregorianCalendar g = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
-        g.setTime(new Date());
-        return DateFormat.format("E, dd MMM yyyy hh:mm:ss zz", g).toString();
+        Date currentTime = new Date();
+        SimpleDateFormat dateFormatGmt = new SimpleDateFormat("E, dd MMM yyyy hh:mm:ss zz", Locale.US);
+        dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return dateFormatGmt.format(currentTime);
     }
 
     /**

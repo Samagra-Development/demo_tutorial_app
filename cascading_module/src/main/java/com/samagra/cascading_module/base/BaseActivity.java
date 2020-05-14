@@ -2,6 +2,7 @@ package com.samagra.cascading_module.base;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.samagra.cascading_module.di.component.ActivityComponent;
 import com.samagra.cascading_module.di.component.DaggerActivityComponent;
 import com.samagra.cascading_module.di.modules.CommonsActivityModule;
+import com.samagra.commons.Constants;
+
+import org.odk.collect.android.utilities.LocaleHelper;
 
 /**
  * This abstract class serves as the Base for all other activities used in this module. The class is
@@ -40,6 +44,12 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
     @Override
     public Context getActivityContext() {
         return this;
+    }
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(new LocaleHelper().updateLocale(base, PreferenceManager.getDefaultSharedPreferences(base).getString(Constants.APP_LANGUAGE_KEY, "en")));
     }
 
     @Override

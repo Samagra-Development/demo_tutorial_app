@@ -26,7 +26,7 @@ public class LocaleHelper {
         return updateLocale(context, getLocaleCode(context));
     }
 
-    private Context updateLocale(Context context, String language) {
+    public Context updateLocale(Context context, String language) {
         Locale locale = getLocale(language);
         Locale.setDefault(locale);
 

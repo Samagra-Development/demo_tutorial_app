@@ -19,6 +19,7 @@ package org.odk.collect.android.activities;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -40,9 +41,9 @@ import java.util.HashMap;
 
 import timber.log.Timber;
 
-import static org.odk.collect.android.utilities.PermissionUtils.areStoragePermissionsGranted;
 import static org.odk.collect.android.utilities.PermissionUtils.finishAllActivities;
 import static org.odk.collect.android.utilities.PermissionUtils.isEntryPointActivity;
+import static org.odk.collect.android.utilities.PermissionUtils.areStoragePermissionsGranted;
 
 public abstract class CollectAbstractActivity extends AppCompatActivity {
 
@@ -125,9 +126,8 @@ public abstract class CollectAbstractActivity extends AppCompatActivity {
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(new LocaleHelper().updateLocale(base));
+        super.attachBaseContext(new LocaleHelper().updateLocale(base, PreferenceManager.getDefaultSharedPreferences(base).getString(Constants.APP_LANGUAGE_KEY, "en")));
     }
-
 
     /**
      * This function modifies the current Activity {@link Toolbar} with the parameters provided in the

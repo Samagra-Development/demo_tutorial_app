@@ -4,17 +4,20 @@ import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.samagra.commons.Constants;
 import com.samagra.parent.MyApplication;
 import com.samagra.parent.di.component.ActivityComponent;
 import com.samagra.parent.di.component.DaggerActivityComponent;
 import com.samagra.parent.di.modules.ActivityModule;
 
 import org.odk.collect.android.activities.CollectAbstractActivity;
+import org.odk.collect.android.utilities.LocaleHelper;
 
 import static android.content.pm.PackageManager.GET_META_DATA;
 
@@ -40,8 +43,6 @@ public abstract class BaseActivity extends CollectAbstractActivity implements Mv
     }
 
 
-
-
     public ActivityComponent getActivityComponent() {
         if (activityComponent == null) {
             activityComponent = DaggerActivityComponent.builder()
@@ -65,8 +66,6 @@ public abstract class BaseActivity extends CollectAbstractActivity implements Mv
     }
 
 
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -74,9 +73,8 @@ public abstract class BaseActivity extends CollectAbstractActivity implements Mv
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+        super.attachBaseContext(new LocaleHelper().updateLocale(base, PreferenceManager.getDefaultSharedPreferences(base).getString(Constants.APP_LANGUAGE_KEY, "en")));
     }
-
 
     @Override
     public Context getActivityContext() {

@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 
 import androidx.preference.PreferenceManager;
 
+import com.samagra.commons.Constants;
 import com.samagra.commons.LocaleManager;
 import com.samagra.parent.di.ApplicationContext;
 import com.samagra.parent.di.PreferenceInfo;
+
+import org.odk.collect.android.utilities.LocaleHelper;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -50,6 +53,15 @@ public class AppPreferenceHelper implements PreferenceHelper {
     @Override
     public String getCurrentUserId() {
         return defaultPreferences.getString("user.id", "");
+    }
+
+    @Override
+    public String updateAppLanguage() {
+        if (defaultPreferences.getString(Constants.APP_LANGUAGE_KEY, "en").equals("en")) {
+            return "en";
+        } else {
+            return "hi";
+        }
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.samagra.commons;
 
+import android.content.Context;
+
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.InternetObservingSettings;
 import com.github.pwittchen.reactivenetwork.library.rx2.internet.observing.strategy.SocketInternetObservingStrategy;
@@ -74,8 +76,9 @@ public class InternetMonitor {
      * @throws InitializationException if {@link InternetMonitor#init(MainApplication)} <b>OR</b>
      *                                 {@link InternetMonitor#init(MainApplication, InternetObservingSettings)} is not called prior
      *                                 to calling this.
+     * @param applicationContext
      */
-    public static void startMonitoringInternet() throws InitializationException {
+    public static void startMonitoringInternet(MainApplication applicationContext) throws InitializationException {
         checkValidConfig();
         Timber.d("Starting Monitoring");
         monitorSubscription = ReactiveNetwork
@@ -87,7 +90,7 @@ public class InternetMonitor {
                     if (isConnectedToHost != lastConnectedState) {
                         Timber.d("Is Connected To Host ? %s", isConnectedToHost);
                         String message = isConnectedToHost ? "Connected To Network" : "Lost Internet Connection";
-                        InternetIndicatorOverlay.make(mainApplication, message, 5000).show();
+                        InternetIndicatorOverlay.make(applicationContext, message, 5000).show();
                         lastConnectedState = isConnectedToHost;
                         InternetStatus status = new InternetStatus(isConnectedToHost, new Date());
                         mainApplication.getEventBus().send(new ExchangeObject.DataExchangeObject<InternetStatus>(Modules.MAIN_APP, Modules.COMMONS, status));
@@ -98,7 +101,7 @@ public class InternetMonitor {
 
     /**
      * This function stops the internet connection monitoring. It is safe to call even if monitoring
-     * is not yet started via {@link InternetMonitor#startMonitoringInternet()}. However an exception
+     * is not yet started via {@link InternetMonitor#startMonitoringInternet(Context)}. However an exception
      * will be thrown if this call is made without first initialising the class.
      *
      * @throws InitializationException if  {@link InternetMonitor#init(MainApplication)}

@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.samagra.ancillaryscreens.di.component.ActivityComponent;
 import com.samagra.ancillaryscreens.di.component.DaggerActivityComponent;
 import com.samagra.ancillaryscreens.di.modules.CommonsActivityModule;
+import com.samagra.commons.Constants;
 import com.samagra.commons.LocaleManager;
+
+import org.odk.collect.android.utilities.LocaleHelper;
 
 import java.util.Locale;
 
@@ -56,8 +60,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
 
     @Override
     protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
+        super.attachBaseContext(new LocaleHelper().updateLocale(base, PreferenceManager.getDefaultSharedPreferences(base).getString(Constants.APP_LANGUAGE_KEY, "en")));
     }
+
+
 
     protected void resetTitles() {
         try {

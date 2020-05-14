@@ -61,7 +61,7 @@
     <string name="no_internet_retry">Please connect to internet and retry</string>
     <string name="retry">Retry</string>
     <string name="change_language">Change Language</string>
-    <string name="hindi">Hindi</string>
+    <string name="hindi">हिंदी</string>
     <string name="settings">Settings</string>
     <string name="no_internet_45">Please connect to internet to update data.</string>
     <string name="gender">लिंग</string>
@@ -71,5 +71,8 @@
     <string name="fill_forms">Fill Forms</string>
     <string name="about_us_summary">This app is based on step by step tutorial  to show the user on how to create a plug and play architecture based app built on the Samagra module.</string>
     <string name="need_help">Need Help?</string>
-    <string name="select_language">Select language</string>
+    <string name="select_language_english">Please select your language</string>
+    <string name="product_image">back</string>
+    <string name="select_language_hindi">कृपया अपनी भाषा चुनें</string>
+
 </resources>

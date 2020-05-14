@@ -66,9 +66,10 @@ public class SplashPresenter<V extends SplashContract.View, I extends SplashCont
             Intent intent = new Intent(Constants.INTENT_LAUNCH_HOME_ACTIVITY);
             ExchangeObject.SignalExchangeObject signalExchangeObject = new ExchangeObject.SignalExchangeObject(Modules.MAIN_APP, Modules.ANCILLARY_SCREENS, intent, true);
             AncillaryScreensDriver.mainApplication.getEventBus().send(signalExchangeObject);
+            getIFormManagementContract().resetODKForms(getMvpView().getActivityContext());
         } else {
             getIFormManagementContract().resetEverythingODK();
-            getIFormManagementContract().resetODKForms(getMvpView().getActivityContext());
+//            getIFormManagementContract().resetODKForms(getMvpView().getActivityContext());
             Timber.d("Launching Login");
             AncillaryScreensDriver.launchLoginScreen(getMvpView().getActivityContext());
         }

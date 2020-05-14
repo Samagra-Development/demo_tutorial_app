@@ -22,4 +22,6 @@ public interface PreferenceHelper {
     String getValueForKey(String content);
 
     String getCurrentUserId();
+
+    String updateAppLanguage();
 }

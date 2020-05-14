@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import com.samagra.ancillaryscreens.R;
 import com.samagra.ancillaryscreens.R2;
 import com.samagra.ancillaryscreens.base.BaseActivity;
+import com.samagra.commons.InternetMonitor;
 import com.samagra.commons.MainApplication;
 
 import javax.inject.Inject;
@@ -59,6 +60,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
      */
     @Override
     public void showSimpleSplash() {
+        InternetMonitor.startMonitoringInternet(((MainApplication) getApplicationContext()));
         splashDefaultLayout.setVisibility(View.GONE);
         splashImage.setImageResource(R.drawable.login_bg);
         splashImage.setVisibility(View.VISIBLE);

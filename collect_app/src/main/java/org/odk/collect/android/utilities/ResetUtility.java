@@ -17,6 +17,9 @@
 package org.odk.collect.android.utilities;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
+
+import com.samagra.commons.Constants;
 
 import org.odk.collect.android.application.Collect;
 import org.odk.collect.android.dao.FormsDao;
@@ -72,22 +75,21 @@ public class ResetUtility {
     }
 
     private void resetPreferences(Context context) {
+        String appLanguage = PreferenceManager.getDefaultSharedPreferences(context).getString(Constants.APP_LANGUAGE_KEY, "en");
         GeneralSharedPreferences.getInstance().loadDefaultPreferences();
         AdminSharedPreferences.getInstance().loadDefaultPreferences();
-
         boolean deletedSettingsFolderContest = !new File(Collect.SETTINGS).exists()
                 || deleteFolderContents(Collect.SETTINGS);
 
         boolean deletedSettingsFile = !new File(Collect.ODK_ROOT + "/collect.settings").exists()
                 || (new File(Collect.ODK_ROOT + "/collect.settings").delete());
         
-        new LocaleHelper().updateLocale(context);
-
+        new LocaleHelper().updateLocale(context, appLanguage);
         if (deletedSettingsFolderContest && deletedSettingsFile) {
             failedResetActions.remove(failedResetActions.indexOf(ResetAction.RESET_PREFERENCES));
         }
-
         Collect.getInstance().initProperties();
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(Constants.APP_LANGUAGE_KEY, appLanguage).apply();
     }
 
     private void resetInstances() {

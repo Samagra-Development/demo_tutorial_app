@@ -28,4 +28,6 @@ public class Constants {
     public static final String LOGOUT_CALLS = "logout_calls";
 
     public static final String WORK_MANAGER_SHARED_PREFS_NAME = "com.taskscheduler.sharedprefname";
+
+    public static final String APP_LANGUAGE_KEY = "applicationLanguage";
 }

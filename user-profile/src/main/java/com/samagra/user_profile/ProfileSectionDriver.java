@@ -17,7 +17,7 @@ import java.util.HashMap;
 /**
  * The driver class for this module, any screen that needs to be launched from outside this module, should be
  * launched using this class.
- * Note: It is essential that you call the {@link ProfileSectionDriver#init(MainApplication, String, String, String, String, String)} to initialise
+ * Note: It is essential that you call the {@link ProfileSectionDriver#init(MainApplication, String, String, String, String, String,String)} to initialise
  * the class prior to using it else an {@link com.samagra.user_profile.InvalidConfigurationException} will be thrown.
  *
  * @author Pranav Sharma
@@ -59,7 +59,7 @@ public class ProfileSectionDriver {
     }
 
     /**
-     * Function to check if the mainApplication is initialised indicating if {@link ProfileSectionDriver#init(MainApplication, String, String, String, String, String)} is called or not.
+     * Function to check if the mainApplication is initialised indicating if {@link ProfileSectionDriver#init(MainApplication, String, String, String, String, String, String)} is called or not.
      * If not, it throws {@link com.samagra.user_profile.InvalidConfigurationException}
      *
      * @throws com.samagra.user_profile.InvalidConfigurationException - This Exception means that the module is not configured by the user properly. The exception generates

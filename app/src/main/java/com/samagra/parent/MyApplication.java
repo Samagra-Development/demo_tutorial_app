@@ -6,15 +6,18 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.multidex.MultiDex;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.samagra.ancillaryscreens.AncillaryScreensDriver;
@@ -28,6 +31,7 @@ import com.samagra.commons.Modules;
 import com.samagra.commons.NetworkConnectionInterceptor;
 import com.samagra.commons.RxBus;
 import com.samagra.commons.TaskScheduler.Manager;
+import com.samagra.commons.utils.AlertDialogUtils;
 import com.samagra.notification_module.AppNotificationUtils;
 import com.samagra.parent.di.component.ApplicationComponent;
 import com.samagra.parent.di.component.DaggerApplicationComponent;
@@ -35,13 +39,23 @@ import com.samagra.parent.di.modules.ApplicationModule;
 import com.samagra.parent.helper.OkHttpClientProvider;
 
 import org.odk.collect.android.application.Collect;
+import org.odk.collect.android.application.FormManagmentModuleInitialisationListener;
+import org.odk.collect.android.contracts.ComponentManager;
 import org.odk.collect.android.contracts.FormManagementSectionInteractor;
+import org.odk.collect.android.preferences.GeneralSharedPreferences;
+import org.odk.collect.android.utilities.LocaleHelper;
+
+import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.OkHttpClient;
 import timber.log.Timber;
+
+import static org.odk.collect.android.preferences.GeneralKeys.KEY_APP_LANGUAGE;
+
 
 /**
  * The {@link Application} class for the app. This extends {@link Application} because the app module has a dependency on
@@ -51,7 +65,7 @@ import timber.log.Timber;
  * @author Pranav Sharma
  * @see MainApplication
  */
-public class MyApplication extends Collect implements MainApplication, LifecycleObserver {
+public class MyApplication extends Application implements MainApplication, LifecycleObserver {
 
     protected ApplicationComponent applicationComponent;
 
@@ -70,12 +84,22 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
     @Override
     public void onCreate() {
         super.onCreate();
+        Collect.getInstance().init(this, getApplicationContext(), new FormManagmentModuleInitialisationListener() {
+            @Override
+            public void onSuccess() {
+                Timber.d("Form Module has been initialised correctly");
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Timber.d("Form Module could not be initialised correctly");
+                AlertDialogUtils.createErrorDialog(getApplicationContext(), "Could not start app as Form Module couldn't be initialised properly.", true);
+            }
+        });
         eventBus = new RxBus();
         setupRemoteConfig();
         setupActivityLifecycleListeners();
         InternetMonitor.init(this);
-        InternetMonitor.startMonitoringInternet();
-        Manager.init(this);
         initializeFormManagementPackage();
         AppNotificationUtils.createNotificationChannel(this);
         AncillaryScreensDriver.init(this, AppConstants.BASE_API_URL,
@@ -85,11 +109,10 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
         initBus();
     }
 
-
     private void initializeFormManagementPackage() {
-        org.odk.collect.android.contracts.ComponentManager.registerFormManagementPackage(new FormManagementSectionInteractor());
-        FormManagementCommunicator.setContract(org.odk.collect.android.contracts.ComponentManager.iFormManagementContract);
-        org.odk.collect.android.contracts.ComponentManager.iFormManagementContract.setODKModuleStyle(this, R.drawable.saksham_bg, R.style.BaseAppTheme,
+        ComponentManager.registerFormManagementPackage(new FormManagementSectionInteractor());
+        FormManagementCommunicator.setContract(ComponentManager.iFormManagementContract);
+        ComponentManager.iFormManagementContract.setODKModuleStyle(this, R.drawable.login_bg, R.style.BaseAppTheme,
                 R.style.FormEntryActivityTheme, R.style.BaseAppTheme_SettingsTheme_Dark, Long.MAX_VALUE);
     }
     public static String getApplicationId() {
@@ -251,31 +274,27 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
     }
 
     public void setupRemoteConfig() {
-        try {
-            mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-            FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                    .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                    .setMinimumFetchIntervalInSeconds(1)
-                    .build();
-            mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(new OnCompleteListener<Boolean>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Boolean> task) {
-                            if (task.isSuccessful()) {
-                                boolean updated = task.getResult();
-                                Timber.e("Remote config activate successful. Config params updated :: " + updated);
-                            } else {
-                                Timber.e("Remote config activate failed.");
-                            }
-                        }
-                    });
-                }
-            });
-        }catch (Exception e){
-            //TODO: Crash when logging out.
-            Timber.e(e);
+        FirebaseApp.initializeApp(this);
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setMinimumFetchIntervalInSeconds(1)
+                .build();
+        mFirebaseRemoteConfig.setConfigSettingsAsync(configSettings).addOnCompleteListener(task -> mFirebaseRemoteConfig.fetchAndActivate().addOnCompleteListener(task1 -> {
+            if (task1.isSuccessful()) {
+                Timber.e("Remote config activate successful. Config params updated :: %s", task1.getResult());
+            } else {
+                Timber.e("Remote config activate failed.");
+            }
+        }));
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Collect.defaultSysLanguage = newConfig.locale.getLanguage();
+        boolean isUsingSysLanguage = GeneralSharedPreferences.getInstance().get(KEY_APP_LANGUAGE).equals("");
+        if (!isUsingSysLanguage) {
+            new LocaleHelper().updateLocale(this);
         }
 
     }
@@ -295,12 +314,6 @@ public class MyApplication extends Collect implements MainApplication, Lifecycle
             compositeDisposable.dispose();
     }
 
-
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-    }
 
     /**
      * Returns the Lifecycle of the provider.
